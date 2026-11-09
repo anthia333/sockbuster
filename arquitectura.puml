@@ -414,7 +414,7 @@ title Vista Física — Sockbuster Video & Socks
 
 node "Dispositivo del cliente\n----\nNavegador web" as Nav
 
-cloud "CDN GitHub Pages\n----\nindex.html · catalogo.html\ndiagramas.html · css · js · svg" as CDN
+cloud "CDN Netlify\n----\nindex.html · catalogo.html\ndiagramas.html · css · js · svg" as CDN
 node "Balanceador NGINX" as LB
 
 node "Servidor App 1\n----\nNode.js · Docker\nAPI Gateway + servicios" as App1

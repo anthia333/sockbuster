@@ -2,7 +2,7 @@
 
 Prototipo web de la tienda de calcetines temáticos Sockbuster, con su arquitectura modelada según el paradigma 4+1 de vistas UML.
 
-**Sitio publicado:** https://USUARIO.github.io/sockbuster/
+**Sitio publicado:** https://SITIO.netlify.app/
 
 Evaluación Sumativa 3 · TI3025 Modelamiento de soluciones informáticas · Ingeniería en Informática · INACAP Punta Arenas
 Docente: Paulo Simunovic Oyarzún
@@ -29,7 +29,7 @@ Docente: Paulo Simunovic Oyarzún
 | RF02 | Carrito y gestión de pedidos | Agregar productos, cambiar cantidades en el carrito y pagar. Se muestra el resumen con un ID tipo `SB-AAAAMMDD-XXXX`. |
 | RF03 | Administración de inventario y temáticas | Ingresar como administrador y usar el panel al final del catálogo para registrar modelos, asociarlos a una película o serie y cambiar stock y precio. |
 | RF04 | Reseñas de fanáticos | Ingresar como cliente, abrir la ficha de un producto y publicar de 1 a 5 estrellas con un comentario. |
-| RNF01 | Disponibilidad y despliegue en la nube | Sitio estático en GitHub Pages (HTTPS + CDN), CSS compilado y fotos en SVG livianos. |
+| RNF01 | Disponibilidad y despliegue en la nube | Sitio estático en Netlify (HTTPS + CDN), CSS compilado y fotos en SVG livianos. |
 | RNF02 | Seguridad con HTTPS y JWT | El `ApiGateway` valida un JWT firmado con HS256. Las rutas de administración responden 401 sin sesión y 403 si el rol no es ADMIN. |
 
 ### Cuentas de prueba
@@ -59,12 +59,13 @@ La pasarela de pago es simulada: cualquier tarjeta de 16 dígitos se aprueba y l
 │   ├── catalogo.js          lógica de la página de catálogo
 │   └── diagramas.js         pestañas de la página de arquitectura
 ├── src/estilos.css          entrada de Tailwind
-└── tailwind.config.js
+├── tailwind.config.js
+└── netlify.toml             cabeceras de seguridad y caché para Netlify
 ```
 
 ## Ejecutar en local
 
-Basta con abrir `index.html` en el navegador. Para que funcione igual que en GitHub Pages es mejor usar un servidor local:
+Basta con abrir `index.html` en el navegador. Para que funcione igual que en Netlify es mejor usar un servidor local:
 
 ```bash
 python -m http.server 8000
@@ -84,4 +85,4 @@ java -jar plantuml.jar -tsvg diagramas/*.puml
 
 ## Tecnologías
 
-HTML5, Tailwind CSS 3, JavaScript sin frameworks, Web Crypto API (JWT HS256), PlantUML y GitHub Pages.
+HTML5, Tailwind CSS 3, JavaScript sin frameworks, Web Crypto API (JWT HS256), PlantUML y Netlify.
