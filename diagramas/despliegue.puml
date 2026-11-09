@@ -1,0 +1,68 @@
+@startuml despliegue
+!theme plain
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 80
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam nodeBackgroundColor #F8FAFC
+skinparam nodeBorderColor #64748B
+skinparam artifactBackgroundColor #EEF2FF
+skinparam artifactBorderColor #4F46E5
+skinparam databaseBackgroundColor #DCFCE7
+skinparam databaseBorderColor #16A34A
+skinparam cloudBackgroundColor #FFF7ED
+skinparam cloudBorderColor #EA580C
+skinparam noteBackgroundColor #FEFCE8
+skinparam noteBorderColor #CA8A04
+
+title Vista Física — Sockbuster Video & Socks
+
+node "Dispositivo del cliente\n----\nNavegador web" as Nav
+
+cloud "CDN GitHub Pages\n----\nindex.html · catalogo.html\ndiagramas.html · css · js · svg" as CDN
+node "Balanceador NGINX" as LB
+
+node "Servidor App 1\n----\nNode.js · Docker\nAPI Gateway + servicios" as App1
+node "Servidor App 2\n----\nNode.js · Docker\nAPI Gateway + servicios" as App2
+
+database "PostgreSQL\nprimaria" as DB1
+database "PostgreSQL\nréplica" as DB2
+cloud "Pasarela de Pago" as PG
+
+Nav --> CDN : HTTPS
+Nav --> LB : HTTPS · JWT
+CDN -[hidden]right- LB
+
+LB --> App1
+LB --> App2
+App1 -[hidden]right- App2
+
+App1 --> DB1
+App2 --> DB1
+DB1 -right-> DB2
+DB2 -[hidden]right- PG
+App2 --> PG
+
+note right of LB
+  TLS 1.3
+  Reparte la carga
+  entre 2 réplicas
+end note
+note bottom of DB1
+  TCP 5432
+  AES-256 en reposo
+end note
+note bottom of DB2
+  Replicación
+  asíncrona
+end note
+note bottom of CDN
+  Carga inicial < 2 s
+end note
+@enduml

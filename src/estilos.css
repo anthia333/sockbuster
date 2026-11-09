@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+dialog[open] { animation: aparecer .18s ease-out; }
+@keyframes aparecer { from { opacity: 0; transform: translateY(8px); } }
+#dlg-carrito[open] { animation: deslizar .2s ease-out; }
+@keyframes deslizar { from { transform: translateX(40px); opacity: 0; } }

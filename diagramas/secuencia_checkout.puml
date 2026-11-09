@@ -1,0 +1,83 @@
+@startuml secuencia_checkout
+!theme plain
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam sequenceParticipantBackgroundColor #EEF2FF
+skinparam sequenceParticipantBorderColor #4F46E5
+skinparam sequenceLifeLineBorderColor #94A3B8
+skinparam sequenceGroupBackgroundColor #F1F5F9
+skinparam sequenceGroupBorderColor #94A3B8
+skinparam sequenceBoxBorderColor #CBD5E1
+skinparam databaseBackgroundColor #DCFCE7
+skinparam databaseBorderColor #16A34A
+skinparam noteBackgroundColor #FEFCE8
+skinparam noteBorderColor #CA8A04
+autonumber
+
+title Vista de Procesos — Checkout del carrito (RF02)
+
+actor Cliente
+participant "catalogo.html" as UI
+box "Backend" #F8FAFC
+  participant ApiGateway as GW #FCE7F3
+  participant PedidoService as Ped
+  participant CatalogoService as Cat
+  database "BD Pedidos" as DBP
+end box
+participant "Pasarela de Pago" as PG #FFF7ED
+
+== Armado del carrito ==
+Cliente -> UI : agregar(calcetin, talla, cantidad)
+UI -> UI : carrito.calcularTotal()
+Cliente -> UI : confirmar compra
+UI -> GW : POST /pedidos (carrito)
+activate GW
+GW -> Ped : checkout(carrito)
+activate Ped
+
+== Validación concurrente ==
+par
+  Ped -> Cat : reservarStock(items)
+  activate Cat
+  note right of Cat
+    Sección crítica: la reserva es atómica
+    para que dos clientes no compren
+    la última unidad al mismo tiempo
+  end note
+  Cat --> Ped : stock reservado
+  deactivate Cat
+else
+  Ped -> Ped : calcularTotal()
+end
+
+alt sin stock suficiente
+  Ped --> GW : 409 Stock insuficiente
+  GW --> UI : error
+  UI --> Cliente : aviso "sin stock en esa talla"
+else stock reservado
+  Ped -> PG : cobrar(total)
+  activate PG
+  PG --> Ped : resultado
+  deactivate PG
+  alt pago aprobado
+    Ped -> DBP : guardar(pedido, PAGADO)
+    Ped -> Cat : confirmarDescuento(items)
+    Ped --> GW : 201 pedido SB-XXXX
+    GW --> UI : resumen del pedido
+    UI --> Cliente : muestra ID y detalle
+  else pago rechazado
+    Ped -> DBP : guardar(pedido, RECHAZADO)
+    Ped ->> Cat : liberarStock(items)
+    Ped --> GW : 402 Pago rechazado
+    GW --> UI : error
+    UI --> Cliente : aviso "pago rechazado"
+  end
+end
+deactivate Ped
+deactivate GW
+@enduml

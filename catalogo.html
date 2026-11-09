@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catálogo · Sockbuster</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+</head>
+<body class="bg-crema text-tinta font-sans antialiased">
+  <header id="encabezado"></header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-widest text-rosa">Videoclub de calcetines</p>
+        <h1 class="font-display text-3xl md:text-4xl mt-1">Catálogo</h1>
+      </div>
+      <p id="conteo" class="text-sm font-semibold text-slate-600" aria-live="polite"></p>
+    </div>
+
+    <section class="mt-6 rounded-2xl bg-white border-2 border-tinta p-4 shadow-[4px_4px_0_#1b1035]" aria-label="Filtros">
+      <div id="chips-colecciones" class="flex flex-wrap gap-2"></div>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <label class="block text-sm font-semibold">Buscar
+          <input id="filtro-texto" type="search" placeholder="Nombre, película o serie" class="mt-1 w-full rounded-lg border-2 border-slate-200 px-3 py-2 focus:border-tinta outline-none">
+        </label>
+        <label class="block text-sm font-semibold">Talla
+          <select id="filtro-talla" class="mt-1 w-full rounded-lg border-2 border-slate-200 px-3 py-2 bg-white focus:border-tinta outline-none">
+            <option value="">Todas</option>
+            <option>35-38</option>
+            <option>39-42</option>
+            <option>43-46</option>
+          </select>
+        </label>
+        <label class="block text-sm font-semibold">Precio máximo: <span id="valor-precio" class="text-rosa">sin límite</span>
+          <input id="filtro-precio" type="range" min="5000" max="10000" step="500" value="10000" class="mt-3 w-full accent-rosa">
+        </label>
+        <label class="block text-sm font-semibold">Ordenar por
+          <select id="filtro-orden" class="mt-1 w-full rounded-lg border-2 border-slate-200 px-3 py-2 bg-white focus:border-tinta outline-none">
+            <option value="nombre">Nombre</option>
+            <option value="precio-asc">Precio: menor a mayor</option>
+            <option value="precio-desc">Precio: mayor a menor</option>
+            <option value="valoracion">Mejor valorados</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section id="grilla" class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-label="Productos"></section>
+
+    <section id="admin" class="hidden mt-14 scroll-mt-6" aria-label="Administración">
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-turquesa">Solo administrador · JWT rol ADMIN</p>
+          <h2 class="font-display text-2xl mt-1">Inventario y temáticas</h2>
+        </div>
+        <button id="btn-restablecer" class="text-xs font-semibold px-3 py-2 rounded-lg border-2 border-tinta hover:bg-white">Restablecer datos de prueba</button>
+      </div>
+
+      <div class="mt-5 grid lg:grid-cols-[380px_1fr] gap-6 items-start">
+        <form id="form-nuevo" class="rounded-2xl bg-white border-2 border-tinta p-5 space-y-3" novalidate>
+          <p class="font-display text-lg">Nuevo modelo</p>
+          <label class="block text-sm font-semibold">Nombre del modelo
+            <input name="nombre" required class="mt-1 w-full rounded-lg border-2 border-slate-200 px-3 py-2 focus:border-tinta outline-none">
+          </label>
+          <label class="block text-sm font-semibold">Colección
+            <select name="coleccionId" id="admin-coleccion" class="mt-1 w-full rounded-lg border-2 border-slate-200 px-3 py-2 bg-white"></select>
+          </label>
+          <label class="block text-sm font-semibold">Película o serie
+            <select name="tematicaId" id="admin-tematica" class="mt-1 w-full rounded-lg border-2 border-slate-200 px-3 py-2 bg-white"></select>
+          </label>
+          <div id="nueva-tematica" class="hidden grid grid-cols-[1fr_auto_auto] gap-2">
+            <input name="tituloTematica" placeholder="Título" class="rounded-lg border-2 border-slate-200 px-3 py-2 min-w-0">
+            <select name="tipoTematica" class="rounded-lg border-2 border-slate-200 px-2 py-2 bg-white">
+              <option>Película</option>
+              <option>Serie</option>
+            </select>
+            <input name="anioTematica" type="number" placeholder="Año" class="w-20 rounded-lg border-2 border-slate-200 px-2 py-2">
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="block text-sm font-semibold">Precio (CLP)
+              <input name="precio" type="number" min="1000" step="10" class="mt-1 w-full rounded-lg border-2 border-slate-200 px-3 py-2">
+            </label>
+            <label class="block text-sm font-semibold">Stock
+              <input name="stock" type="number" min="0" class="mt-1 w-full rounded-lg border-2 border-slate-200 px-3 py-2">
+            </label>
+          </div>
+          <fieldset class="text-sm font-semibold">
+            <legend>Tallas</legend>
+            <div class="mt-1 flex gap-3">
+              <label class="flex items-center gap-1 font-normal"><input type="checkbox" name="tallas" value="35-38" class="accent-rosa"> 35-38</label>
+              <label class="flex items-center gap-1 font-normal"><input type="checkbox" name="tallas" value="39-42" class="accent-rosa" checked> 39-42</label>
+              <label class="flex items-center gap-1 font-normal"><input type="checkbox" name="tallas" value="43-46" class="accent-rosa"> 43-46</label>
+            </div>
+          </fieldset>
+          <div class="grid grid-cols-[1fr_auto] gap-3 items-end">
+            <label class="block text-sm font-semibold">Diseño
+              <select name="motivo" id="admin-motivo" class="mt-1 w-full rounded-lg border-2 border-slate-200 px-3 py-2 bg-white">
+                <option value="rayas">Rayas</option>
+                <option value="estrellas">Estrellas</option>
+                <option value="rayos">Rayos</option>
+                <option value="cuadros">Cuadros</option>
+                <option value="hexagonos">Hexágonos</option>
+                <option value="copos">Copos</option>
+                <option value="puntos">Chispas</option>
+                <option value="hojas">Hojas</option>
+                <option value="espiral">Espiral</option>
+              </select>
+            </label>
+            <div class="flex gap-1">
+              <input type="color" name="colorBase" value="#1e293b" class="w-9 h-10 rounded border-2 border-slate-200" aria-label="Color base">
+              <input type="color" name="colorFranja" value="#ff3d7f" class="w-9 h-10 rounded border-2 border-slate-200" aria-label="Color de franjas">
+              <input type="color" name="colorAcento" value="#ffc83d" class="w-9 h-10 rounded border-2 border-slate-200" aria-label="Color del diseño">
+            </div>
+          </div>
+          <div id="vista-previa" class="h-28 flex justify-center rounded-xl bg-crema"></div>
+          <p id="error-nuevo" class="hidden text-sm font-semibold text-rosa" role="alert"></p>
+          <button class="w-full py-3 rounded-xl bg-tinta text-crema font-bold hover:bg-tinta/90">Registrar modelo</button>
+        </form>
+
+        <div class="rounded-2xl bg-white border-2 border-tinta overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-tinta text-crema text-left">
+                <tr>
+                  <th class="px-3 py-2">Modelo</th>
+                  <th class="px-3 py-2">Temática</th>
+                  <th class="px-3 py-2 w-28">Precio</th>
+                  <th class="px-3 py-2 w-24">Stock</th>
+                  <th class="px-3 py-2"></th>
+                </tr>
+              </thead>
+              <tbody id="tabla-inventario" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="pie" class="mt-16"></footer>
+
+  <dialog id="dlg-ficha" class="w-[min(100%-2rem,760px)] max-h-[90vh] rounded-2xl border-2 border-tinta p-0 backdrop:bg-tinta/60">
+    <div id="ficha-contenido"></div>
+  </dialog>
+
+  <dialog id="dlg-carrito" class="ml-auto mr-0 h-full max-h-full w-full max-w-md m-0 border-0 p-0 backdrop:bg-tinta/60">
+    <div class="h-full flex flex-col bg-crema">
+      <div class="flex items-center justify-between px-5 py-4 bg-tinta text-crema">
+        <p class="font-display text-lg">Tu carrito</p>
+        <button data-cerrar class="w-9 h-9 rounded-lg hover:bg-white/10 text-xl" aria-label="Cerrar carrito">×</button>
+      </div>
+      <div id="carrito-cuerpo" class="flex-1 overflow-y-auto p-5"></div>
+    </div>
+  </dialog>
+
+  <dialog id="dlg-ingresar" class="w-[min(100%-2rem,420px)] rounded-2xl border-2 border-tinta p-0 backdrop:bg-tinta/60">
+    <div class="p-6">
+      <div class="flex items-center justify-between">
+        <p id="ingresar-titulo" class="font-display text-xl">Ingresar</p>
+        <button data-cerrar class="w-9 h-9 rounded-lg hover:bg-slate-100 text-xl" aria-label="Cerrar">×</button>
+      </div>
+      <form id="form-ingresar" class="mt-4 space-y-3" novalidate>
+        <label id="campo-nombre" class="hidden block text-sm font-semibold">Nombre completo
+          <input name="nombre" autocomplete="name" class="mt-1 w-full rounded-lg border-2 border-slate-200 px-3 py-2 focus:border-tinta outline-none">
+        </label>
+        <label class="block text-sm font-semibold">Correo
+          <input name="email" type="email" autocomplete="email" class="mt-1 w-full rounded-lg border-2 border-slate-200 px-3 py-2 focus:border-tinta outline-none">
+        </label>
+        <label class="block text-sm font-semibold">Contraseña
+          <input name="password" type="password" autocomplete="current-password" class="mt-1 w-full rounded-lg border-2 border-slate-200 px-3 py-2 focus:border-tinta outline-none">
+        </label>
+        <p id="error-ingresar" class="hidden text-sm font-semibold text-rosa" role="alert"></p>
+        <button class="w-full py-3 rounded-xl bg-rosa text-white font-bold hover:bg-rosa/90">Continuar</button>
+      </form>
+      <button id="btn-alternar-registro" class="mt-3 w-full text-sm font-semibold underline underline-offset-4">¿No tienes cuenta? Regístrate</button>
+      <div class="mt-4 rounded-xl bg-crema p-3 text-xs text-slate-600">
+        <p class="font-bold text-tinta">Cuentas de prueba</p>
+        <p>Cliente: cliente@sockbuster.cl / cliente123</p>
+        <p>Administrador: admin@sockbuster.cl / admin123</p>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="js/modelo.js"></script>
+  <script src="js/datos.js"></script>
+  <script src="js/servicios.js"></script>
+  <script src="js/gateway.js"></script>
+  <script src="js/comun.js"></script>
+  <script src="js/catalogo.js"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sockbuster Video &amp; Socks</title>
+  <meta name="description" content="Calcetines temáticos inspirados en películas clásicas, series de culto y cultura pop.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+</head>
+<body class="bg-crema text-tinta font-sans antialiased">
+  <header id="encabezado"></header>
+
+  <main>
+    <section class="relative overflow-hidden bg-tinta text-crema">
+      <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_20%_20%,#ff3d7f_0,transparent_40%),radial-gradient(circle_at_80%_60%,#19c3b1_0,transparent_40%)]"></div>
+      <div class="relative max-w-6xl mx-auto px-4 py-14 md:py-20 grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <p class="inline-block px-3 py-1 rounded-full bg-white/10 text-amarillo text-xs font-bold uppercase tracking-widest">Nuevo estreno · Temporada 2026</p>
+          <h1 class="font-display text-4xl sm:text-5xl md:text-6xl leading-[1.05] mt-4">
+            Rebobina<br>tus <span class="text-rosa">pies</span>.
+          </h1>
+          <p class="mt-5 text-lg text-crema/80 max-w-md">
+            Calcetines temáticos de películas clásicas, series de culto y animación.
+            Elige tu colección, tu talla y lúcelos en la próxima maratón.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="catalogo.html" class="px-6 py-3 rounded-xl bg-amarillo text-tinta font-extrabold hover:brightness-105">Ver catálogo</a>
+            <a href="diagramas.html" class="px-6 py-3 rounded-xl border-2 border-crema/30 font-bold hover:bg-white/10">Arquitectura 4+1</a>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="mx-auto max-w-sm rounded-3xl bg-crema text-tinta p-5 shadow-2xl rotate-2">
+            <div class="flex items-center justify-between text-[11px] font-bold uppercase tracking-widest">
+              <span>Sockbuster</span><span class="px-2 py-0.5 rounded bg-rosa text-white">Estreno</span>
+            </div>
+            <div id="destacados" class="grid grid-cols-3 gap-2 mt-4 min-h-[120px]"></div>
+            <div class="mt-4 h-8 rounded bg-tinta flex items-center justify-between px-3 text-crema text-[10px] font-bold tracking-widest">
+              <span>◀◀ REBOBINAR</span><span>SP · 120 MIN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-4 -mt-8 relative z-10">
+      <div class="rounded-2xl bg-white border-2 border-tinta shadow-[6px_6px_0_#1b1035] p-6 md:p-8 grid md:grid-cols-[1fr_auto] gap-6 items-center">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-rosa">Equipo de arquitectura de software</p>
+          <h2 class="font-display text-2xl mt-1">Desarrollado por</h2>
+          <ul class="mt-3 grid sm:grid-cols-3 gap-3">
+            <li class="rounded-xl bg-crema px-4 py-3 font-bold">Mauricio Aravena</li>
+            <li class="rounded-xl bg-crema px-4 py-3 font-bold">Benjamin Aguayo</li>
+            <li class="rounded-xl bg-crema px-4 py-3 font-bold">Oscar Ojeda</li>
+          </ul>
+        </div>
+        <div class="text-sm text-slate-600 md:text-right">
+          <p><b class="text-tinta">TI3025</b> Modelamiento de soluciones informáticas</p>
+          <p>Ingeniería en Informática · INACAP Punta Arenas</p>
+          <p>Docente: Paulo Simunovic Oyarzún</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-4 py-14">
+      <div class="flex items-end justify-between gap-4 flex-wrap">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-rosa">Colecciones temáticas</p>
+          <h2 class="font-display text-3xl mt-1">¿Qué vas a ver hoy?</h2>
+        </div>
+        <a href="catalogo.html" class="text-sm font-bold underline underline-offset-4">Ver todo el catálogo →</a>
+      </div>
+      <div id="colecciones" class="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+    </section>
+
+    <section class="bg-white border-y-2 border-tinta">
+      <div class="max-w-6xl mx-auto px-4 py-12 grid md:grid-cols-3 gap-6">
+        <div>
+          <p class="font-display text-xl">Catálogo con filtros</p>
+          <p class="mt-2 text-slate-600">Busca por colección, talla, precio o el nombre de la película o serie. Cada ficha muestra el stock real y las tallas disponibles.</p>
+        </div>
+        <div>
+          <p class="font-display text-xl">Compra en minutos</p>
+          <p class="mt-2 text-slate-600">Agrega al carrito, ajusta cantidades y confirma el pago simulado. Al final recibes el resumen con el número de tu pedido.</p>
+        </div>
+        <div>
+          <p class="font-display text-xl">Opinión de fanáticos</p>
+          <p class="mt-2 text-slate-600">Con tu cuenta puedes dejar de 1 a 5 estrellas y un comentario sobre el diseño y la calidad de cada par.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="pie"></footer>
+
+  <script src="js/modelo.js"></script>
+  <script src="js/datos.js"></script>
+  <script src="js/servicios.js"></script>
+  <script src="js/gateway.js"></script>
+  <script src="js/comun.js"></script>
+  <script>
+    renderEncabezado("inicio");
+    renderPie();
+
+    (async () => {
+      const [colecciones, catalogo] = await Promise.all([
+        ApiGateway.solicitar("GET", "/colecciones"),
+        ApiGateway.solicitar("GET", "/catalogo", { orden: "valoracion" }),
+      ]);
+
+      document.getElementById("destacados").innerHTML = catalogo.data
+        .slice(0, 3)
+        .map((c) => `<div class="rounded-xl bg-white p-1">${calcetinSVG(c.foto, "w-full h-auto")}</div>`)
+        .join("");
+
+      const colores = ["bg-[#e0e7ff]", "bg-[#fee2e2]", "bg-[#dcfce7]", "bg-[#fef3c7]"];
+      document.getElementById("colecciones").innerHTML = colecciones.data
+        .map((col, i) => {
+          const muestra = catalogo.data.find((c) => c.coleccionId === col.id);
+          const cantidad = catalogo.data.filter((c) => c.coleccionId === col.id).length;
+          return `<a href="catalogo.html?coleccion=${col.id}" class="group rounded-2xl border-2 border-tinta ${colores[i % 4]} p-5 shadow-[4px_4px_0_#1b1035] hover:-translate-y-0.5 transition">
+            <div class="h-32 flex justify-center">${muestra ? calcetinSVG(muestra.foto, "h-full w-auto group-hover:-rotate-6 transition") : ""}</div>
+            <p class="font-display text-lg mt-3">${escaparHTML(col.nombre)}</p>
+            <p class="text-sm text-slate-700 mt-1">${escaparHTML(col.descripcion)}</p>
+            <p class="text-xs font-bold mt-3">${cantidad} modelos →</p>
+          </a>`;
+        })
+        .join("");
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arquitectura UML 4+1 · Sockbuster</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+</head>
+<body class="bg-crema text-tinta font-sans antialiased">
+  <header id="encabezado"></header>
+
+  <main>
+    <section class="bg-tinta text-crema">
+      <div class="max-w-6xl mx-auto px-4 py-10 md:py-14">
+        <p class="text-xs font-bold uppercase tracking-widest text-amarillo">Documentación técnica</p>
+        <h1 class="font-display text-3xl md:text-5xl mt-2">Arquitectura UML 4+1</h1>
+        <p class="mt-4 max-w-3xl text-crema/80 text-lg">Modelamos Sockbuster con el paradigma 4+1 de Kruchten: cuatro vistas que muestran el sistema desde distintos ángulos (lógica, desarrollo, procesos y física) y una quinta vista de escenarios que las conecta. Todos los diagramas están hechos en PlantUML y usan los mismos nombres de clases y componentes que el código del sitio.</p>
+        <div class="mt-6 flex flex-wrap gap-2 text-sm">
+          <span class="px-3 py-1.5 rounded-lg bg-white/10">Mauricio Aravena</span>
+          <span class="px-3 py-1.5 rounded-lg bg-white/10">Benjamin Aguayo</span>
+          <span class="px-3 py-1.5 rounded-lg bg-white/10">Oscar Ojeda</span>
+          <a href="arquitectura.puml" download class="px-3 py-1.5 rounded-lg bg-amarillo text-tinta font-bold">Descargar arquitectura.puml</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="sticky top-0 z-30 bg-crema/95 backdrop-blur border-b-2 border-tinta">
+      <div role="tablist" aria-label="Vistas del paradigma 4+1" class="max-w-6xl mx-auto px-4 py-3 flex gap-2 overflow-x-auto"><button id="tab-logica" role="tab" data-tab="logica" aria-controls="panel-logica" aria-selected="true" class="tab shrink-0 px-4 py-2.5 rounded-xl text-sm font-bold border-2 border-tinta">1. Vista Lógica</button><button id="tab-desarrollo" role="tab" data-tab="desarrollo" aria-controls="panel-desarrollo" aria-selected="false" class="tab shrink-0 px-4 py-2.5 rounded-xl text-sm font-bold border-2 border-tinta">2. Vista de Desarrollo</button><button id="tab-procesos" role="tab" data-tab="procesos" aria-controls="panel-procesos" aria-selected="false" class="tab shrink-0 px-4 py-2.5 rounded-xl text-sm font-bold border-2 border-tinta">3. Vista de Procesos</button><button id="tab-fisica" role="tab" data-tab="fisica" aria-controls="panel-fisica" aria-selected="false" class="tab shrink-0 px-4 py-2.5 rounded-xl text-sm font-bold border-2 border-tinta">4. Vista Física</button><button id="tab-escenarios" role="tab" data-tab="escenarios" aria-controls="panel-escenarios" aria-selected="false" class="tab shrink-0 px-4 py-2.5 rounded-xl text-sm font-bold border-2 border-tinta">5. Escenarios</button></div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-4 py-8">
+    <section id="panel-logica" role="tabpanel" aria-labelledby="tab-logica" data-panel="logica" class="vista">
+      <div class="grid lg:grid-cols-[1fr_340px] gap-6 items-start">
+        <div class="space-y-6 min-w-0">
+        <figure class="rounded-2xl bg-white border-2 border-tinta overflow-hidden">
+          <button type="button" data-ampliar="diagramas/clases.svg" data-titulo="Diagrama de clases" class="block w-full bg-white p-3 md:p-5 cursor-zoom-in" aria-label="Ampliar Diagrama de clases">
+            <img src="diagramas/clases.svg" alt="Diagrama de clases de Sockbuster" class="mx-auto max-h-[640px] w-auto" loading="lazy">
+          </button>
+          <figcaption class="flex flex-wrap items-center justify-between gap-2 border-t-2 border-tinta bg-crema px-4 py-2 text-sm">
+            <span class="font-bold">Diagrama de clases</span>
+            <span class="flex gap-3">
+              <a href="diagramas/clases.svg" target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">Abrir SVG</a>
+              <a href="diagramas/clases.puml" download class="font-semibold underline underline-offset-4">Descargar .puml</a>
+            </span>
+          </figcaption>
+          <details class="border-t border-slate-200">
+            <summary class="cursor-pointer px-4 py-2 text-sm font-bold hover:bg-crema">Ver código PlantUML</summary>
+            <pre class="max-h-96 overflow-auto bg-tinta text-crema text-xs leading-relaxed p-4"><code>@startuml clases
+!theme plain
+skinparam defaultFontName &quot;Segoe UI&quot;
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam linetype ortho
+skinparam nodesep 110
+skinparam ranksep 80
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam minClassWidth 220
+skinparam classBorderColor #475569
+hide empty members
+hide circle
+
+title Vista Lógica — Sockbuster Video &amp; Socks
+
+enum Rol #F1F5F9 {
+  CLIENTE
+  ADMIN
+}
+class Coleccion #E0E7FF {
+  - id : String
+  - nombre : String
+  - descripcion : String
+  --
+  + agregarCalcetin(calcetin) : void
+  + filtrar(talla, precioMax) : List&lt;Calcetin&gt;
+}
+
+class Usuario #DCFCE7 {
+  - id : String
+  - nombre : String
+  - email : String
+  - rol : Rol
+  --
+  + iniciarSesion(email, password) : String
+  + publicarResena(resena) : void
+}
+class Resena #DCFCE7 {
+  - id : String
+  - estrellas : int
+  - comentario : String
+  - fecha : Date
+  --
+  + esValida() : boolean
+}
+class Calcetin #E0E7FF {
+  - sku : String
+  - nombre : String
+  - precio : int
+  - stock : int
+  - tallas : List&lt;String&gt;
+  - foto : String
+  --
+  + actualizarStock(cantidad) : void
+  + cambiarPrecio(precio) : void
+  + asociarTematica(tematica) : void
+  + promedioEstrellas() : double
+}
+class Tematica #E0E7FF {
+  - id : String
+  - titulo : String
+  - tipo : String
+  - anio : int
+}
+
+class Carrito #FEF3C7 {
+  - id : String
+  --
+  + agregar(calcetin, talla, cantidad) : void
+  + modificarCantidad(item, cantidad) : void
+  + calcularTotal() : int
+  + checkout() : Pedido
+}
+class ItemCarrito #FEF3C7 {
+  - talla : String
+  - cantidad : int
+  - precioUnitario : int
+  --
+  + subtotal() : int
+}
+
+class Pedido #FEF3C7 {
+  - id : String
+  - fecha : DateTime
+  - total : int
+  - estado : EstadoPedido
+  --
+  + generarResumen() : String
+}
+enum EstadoPedido #F1F5F9 {
+  PENDIENTE
+  PAGADO
+  RECHAZADO
+}
+
+Rol -[hidden]right- Coleccion
+Rol &lt;.. Usuario
+
+Coleccion &quot;1&quot; o-down- &quot;0..*&quot; Calcetin : agrupa
+
+Usuario &quot;1&quot; -right- &quot;0..*&quot; Resena : escribe
+Resena &quot;0..*&quot; -right- &quot;1&quot; Calcetin : evalúa
+Calcetin &quot;0..*&quot; -right- &quot;1&quot; Tematica : inspirado en
+
+Usuario &quot;1&quot; -down- &quot;0..*&quot; Carrito : arma
+Calcetin &quot;1&quot; -down- &quot;0..*&quot; ItemCarrito : referencia
+Carrito &quot;1&quot; *-right- &quot;1..*&quot; ItemCarrito : contiene
+
+Carrito &quot;1&quot; -down- &quot;0..1&quot; Pedido : confirma
+Pedido -[hidden]right- EstadoPedido
+Pedido ..&gt; EstadoPedido
+
+legend bottom right
+  &lt;b&gt;Módulos&lt;/b&gt;
+  |&lt;back:#E0E7FF&gt;      &lt;/back&gt;| Catálogo |
+  |&lt;back:#DCFCE7&gt;      &lt;/back&gt;| Usuarios y reseñas |
+  |&lt;back:#FEF3C7&gt;      &lt;/back&gt;| Ventas |
+  |&lt;back:#F1F5F9&gt;      &lt;/back&gt;| Enumeraciones |
+endlegend
+@enduml
+</code></pre>
+          </details>
+        </figure></div>
+        <aside class="rounded-2xl bg-white border-2 border-tinta p-5 lg:sticky lg:top-24">
+          <p class="text-xs font-bold uppercase tracking-widest text-rosa">Diagrama de Clases</p>
+          <h2 class="font-display text-2xl mt-1">Vista Lógica</h2>
+          <p class="mt-3 text-slate-700 leading-relaxed">Representa las entidades del dominio de Sockbuster y cómo se relacionan. Dejamos <b>Calcetin</b> al centro porque es la clase con más relaciones: pertenece a una <b>Coleccion</b> (agregación, porque la colección agrupa modelos que pueden existir por sí solos), está inspirado en una <b>Tematica</b> que guarda si es película o serie, recibe <b>Resenas</b> y aparece en los <b>ItemCarrito</b>.</p><p class="mt-3 text-slate-700 leading-relaxed">La compra se lee por la izquierda. Un <b>Usuario</b> arma uno o más <b>Carritos</b>, cada carrito contiene sus ítems (composición: si se borra el carrito, se borran sus ítems) y al confirmar genera como máximo un <b>Pedido</b> con su <b>EstadoPedido</b>. El <b>Rol</b> del usuario (CLIENTE o ADMIN) es el dato que después viaja dentro del token JWT.</p>
+          <p class="mt-5 font-bold text-sm uppercase tracking-wider text-rosa">Requerimientos que cubre</p>
+          <div class="mt-2 flex flex-wrap gap-1.5"><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF01</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF02</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF03</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF04</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RNF02</span></div>
+          <div class="mt-5"><p class="font-bold text-sm uppercase tracking-wider text-rosa">En el código del sitio</p><ul class="mt-1 divide-y divide-slate-200 text-sm"><li class="py-2"><code class="font-bold text-tinta">js/modelo.js</code><span class="block text-slate-600">Las 10 clases y enumeraciones con los mismos atributos y métodos del diagrama.</span></li><li class="py-2"><code class="font-bold text-tinta">Coleccion.filtrar()</code><span class="block text-slate-600">Filtra por talla y precio máximo (RF01).</span></li><li class="py-2"><code class="font-bold text-tinta">Carrito.checkout()</code><span class="block text-slate-600">Envía el carrito al ApiGateway y devuelve el Pedido (RF02).</span></li><li class="py-2"><code class="font-bold text-tinta">Calcetin.actualizarStock() / cambiarPrecio()</code><span class="block text-slate-600">Validan que el stock no quede negativo y que el precio sea un entero positivo (RF03).</span></li><li class="py-2"><code class="font-bold text-tinta">Resena.esValida()</code><span class="block text-slate-600">Exige de 1 a 5 estrellas y un comentario de al menos 10 caracteres (RF04).</span></li></ul></div>
+        </aside>
+      </div>
+      
+    </section>
+    <section id="panel-desarrollo" role="tabpanel" aria-labelledby="tab-desarrollo" data-panel="desarrollo" class="vista hidden">
+      <div class="grid lg:grid-cols-[1fr_340px] gap-6 items-start">
+        <div class="space-y-6 min-w-0">
+        <figure class="rounded-2xl bg-white border-2 border-tinta overflow-hidden">
+          <button type="button" data-ampliar="diagramas/componentes.svg" data-titulo="Diagrama de componentes" class="block w-full bg-white p-3 md:p-5 cursor-zoom-in" aria-label="Ampliar Diagrama de componentes">
+            <img src="diagramas/componentes.svg" alt="Diagrama de componentes de Sockbuster" class="mx-auto max-h-[640px] w-auto" loading="lazy">
+          </button>
+          <figcaption class="flex flex-wrap items-center justify-between gap-2 border-t-2 border-tinta bg-crema px-4 py-2 text-sm">
+            <span class="font-bold">Diagrama de componentes</span>
+            <span class="flex gap-3">
+              <a href="diagramas/componentes.svg" target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">Abrir SVG</a>
+              <a href="diagramas/componentes.puml" download class="font-semibold underline underline-offset-4">Descargar .puml</a>
+            </span>
+          </figcaption>
+          <details class="border-t border-slate-200">
+            <summary class="cursor-pointer px-4 py-2 text-sm font-bold hover:bg-crema">Ver código PlantUML</summary>
+            <pre class="max-h-96 overflow-auto bg-tinta text-crema text-xs leading-relaxed p-4"><code>@startuml componentes
+!theme plain
+skinparam defaultFontName &quot;Segoe UI&quot;
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam linetype ortho
+skinparam nodesep 45
+skinparam ranksep 70
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #CBD5E1
+skinparam componentBackgroundColor #EEF2FF
+skinparam componentBorderColor #4F46E5
+skinparam databaseBackgroundColor #DCFCE7
+skinparam databaseBorderColor #16A34A
+skinparam cloudBackgroundColor #FFF7ED
+skinparam cloudBorderColor #EA580C
+skinparam noteBackgroundColor #FEFCE8
+skinparam noteBorderColor #CA8A04
+
+title Vista de Desarrollo — Sockbuster Video &amp; Socks
+
+package &quot;Presentación (HTML5 · Tailwind CSS · JavaScript)&quot; {
+  [Inicio\nindex.html] as Inicio
+  [Catálogo y Carrito\ncatalogo.html] as Catalogo
+  [Panel Admin\ncatalogo.html#admin] as Panel
+}
+
+[ApiGateway\ngateway.js] as GW #FCE7F3
+note right of GW
+  Punto único de entrada
+  HTTPS · verifica JWT (HS256)
+  Rol ADMIN para RF03
+end note
+
+package &quot;Servicios (servicios.js)&quot; {
+  [AuthService] as Auth
+  [CatalogoService] as Cat
+  [ResenaService] as Res
+  [PedidoService] as Ped
+}
+
+package &quot;Datos (datos.js · localStorage)&quot; {
+  database &quot;BD Usuarios&quot; as DBU
+  database &quot;BD Catálogo&quot; as DBC
+  database &quot;BD Reseñas&quot; as DBR
+  database &quot;BD Pedidos&quot; as DBP
+}
+cloud &quot;Externos&quot; {
+  [Pasarela de Pago\n(simulada)] as PG
+}
+
+Inicio -[hidden]right- Catalogo
+Catalogo -[hidden]right- Panel
+Catalogo ..&gt; GW
+Panel ..&gt; GW
+
+Auth -[hidden]right- Cat
+Cat -[hidden]right- Res
+Res -[hidden]right- Ped
+DBU -[hidden]right- DBC
+DBC -[hidden]right- DBR
+DBR -[hidden]right- DBP
+
+GW ..&gt; Auth
+GW ..&gt; Cat
+GW ..&gt; Res
+GW ..&gt; Ped
+
+Auth ..&gt; DBU
+Cat ..&gt; DBC
+Res ..&gt; DBR
+Ped ..&gt; DBP
+Ped ..&gt; PG
+@enduml
+</code></pre>
+          </details>
+        </figure></div>
+        <aside class="rounded-2xl bg-white border-2 border-tinta p-5 lg:sticky lg:top-24">
+          <p class="text-xs font-bold uppercase tracking-widest text-rosa">Diagrama de Componentes</p>
+          <h2 class="font-display text-2xl mt-1">Vista de Desarrollo</h2>
+          <p class="mt-3 text-slate-700 leading-relaxed">Muestra cómo está organizado el código en capas. Arriba están las páginas, hechas con HTML5, Tailwind CSS (compilado a un solo archivo) y JavaScript sin frameworks. Todas las llamadas pasan por el <b>ApiGateway</b>, que es el único punto de entrada: busca la ruta, valida la firma y el vencimiento del JWT y, si la ruta es de administración, exige el rol ADMIN (si no, responde 401 o 403).</p><p class="mt-3 text-slate-700 leading-relaxed">Debajo hay un servicio por cada área del negocio y cada uno usa solo su propia colección de datos (patrón <i>base de datos por servicio</i>). Así AuthService no comparte los datos de usuarios con el catálogo, lo que ayuda al RNF02. En el prototipo las bases son arreglos de <code>datos.js</code> guardados en localStorage y la pasarela de pago es simulada. Como las páginas solo conocen el gateway, cada servicio podría pasar a un servidor real sin cambiar el HTML.</p>
+          <p class="mt-5 font-bold text-sm uppercase tracking-wider text-rosa">Requerimientos que cubre</p>
+          <div class="mt-2 flex flex-wrap gap-1.5"><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF01</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF02</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF03</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF04</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RNF01</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RNF02</span></div>
+          <div class="mt-5"><p class="font-bold text-sm uppercase tracking-wider text-rosa">En el código del sitio</p><ul class="mt-1 divide-y divide-slate-200 text-sm"><li class="py-2"><code class="font-bold text-tinta">index.html · catalogo.html · diagramas.html</code><span class="block text-slate-600">Capa de presentación. El panel de administración está en catalogo.html#admin y solo aparece con rol ADMIN.</span></li><li class="py-2"><code class="font-bold text-tinta">js/gateway.js</code><span class="block text-slate-600">ApiGateway: tabla de rutas, verificación del JWT (HS256) y control por rol.</span></li><li class="py-2"><code class="font-bold text-tinta">js/servicios.js</code><span class="block text-slate-600">AuthService, CatalogoService, ResenaService, PedidoService y la PasarelaPago simulada.</span></li><li class="py-2"><code class="font-bold text-tinta">js/datos.js</code><span class="block text-slate-600">Objeto DB con usuarios, catálogo, reseñas y pedidos, persistido en localStorage.</span></li><li class="py-2"><code class="font-bold text-tinta">css/estilos.css</code><span class="block text-slate-600">Tailwind CSS 3 compilado y minificado (sin el CDN de desarrollo, para cumplir el RNF01).</span></li></ul></div>
+        </aside>
+      </div>
+      
+    </section>
+    <section id="panel-procesos" role="tabpanel" aria-labelledby="tab-procesos" data-panel="procesos" class="vista hidden">
+      <div class="grid lg:grid-cols-[1fr_340px] gap-6 items-start">
+        <div class="space-y-6 min-w-0">
+        <figure class="rounded-2xl bg-white border-2 border-tinta overflow-hidden">
+          <button type="button" data-ampliar="diagramas/secuencia_checkout.svg" data-titulo="Secuencia del checkout (RF02)" class="block w-full bg-white p-3 md:p-5 cursor-zoom-in" aria-label="Ampliar Secuencia del checkout (RF02)">
+            <img src="diagramas/secuencia_checkout.svg" alt="Secuencia del checkout (RF02) de Sockbuster" class="mx-auto max-h-[640px] w-auto" loading="lazy">
+          </button>
+          <figcaption class="flex flex-wrap items-center justify-between gap-2 border-t-2 border-tinta bg-crema px-4 py-2 text-sm">
+            <span class="font-bold">Secuencia del checkout (RF02)</span>
+            <span class="flex gap-3">
+              <a href="diagramas/secuencia_checkout.svg" target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">Abrir SVG</a>
+              <a href="diagramas/secuencia_checkout.puml" download class="font-semibold underline underline-offset-4">Descargar .puml</a>
+            </span>
+          </figcaption>
+          <details class="border-t border-slate-200">
+            <summary class="cursor-pointer px-4 py-2 text-sm font-bold hover:bg-crema">Ver código PlantUML</summary>
+            <pre class="max-h-96 overflow-auto bg-tinta text-crema text-xs leading-relaxed p-4"><code>@startuml secuencia_checkout
+!theme plain
+skinparam defaultFontName &quot;Segoe UI&quot;
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam sequenceParticipantBackgroundColor #EEF2FF
+skinparam sequenceParticipantBorderColor #4F46E5
+skinparam sequenceLifeLineBorderColor #94A3B8
+skinparam sequenceGroupBackgroundColor #F1F5F9
+skinparam sequenceGroupBorderColor #94A3B8
+skinparam sequenceBoxBorderColor #CBD5E1
+skinparam databaseBackgroundColor #DCFCE7
+skinparam databaseBorderColor #16A34A
+skinparam noteBackgroundColor #FEFCE8
+skinparam noteBorderColor #CA8A04
+autonumber
+
+title Vista de Procesos — Checkout del carrito (RF02)
+
+actor Cliente
+participant &quot;catalogo.html&quot; as UI
+box &quot;Backend&quot; #F8FAFC
+  participant ApiGateway as GW #FCE7F3
+  participant PedidoService as Ped
+  participant CatalogoService as Cat
+  database &quot;BD Pedidos&quot; as DBP
+end box
+participant &quot;Pasarela de Pago&quot; as PG #FFF7ED
+
+== Armado del carrito ==
+Cliente -&gt; UI : agregar(calcetin, talla, cantidad)
+UI -&gt; UI : carrito.calcularTotal()
+Cliente -&gt; UI : confirmar compra
+UI -&gt; GW : POST /pedidos (carrito)
+activate GW
+GW -&gt; Ped : checkout(carrito)
+activate Ped
+
+== Validación concurrente ==
+par
+  Ped -&gt; Cat : reservarStock(items)
+  activate Cat
+  note right of Cat
+    Sección crítica: la reserva es atómica
+    para que dos clientes no compren
+    la última unidad al mismo tiempo
+  end note
+  Cat --&gt; Ped : stock reservado
+  deactivate Cat
+else
+  Ped -&gt; Ped : calcularTotal()
+end
+
+alt sin stock suficiente
+  Ped --&gt; GW : 409 Stock insuficiente
+  GW --&gt; UI : error
+  UI --&gt; Cliente : aviso &quot;sin stock en esa talla&quot;
+else stock reservado
+  Ped -&gt; PG : cobrar(total)
+  activate PG
+  PG --&gt; Ped : resultado
+  deactivate PG
+  alt pago aprobado
+    Ped -&gt; DBP : guardar(pedido, PAGADO)
+    Ped -&gt; Cat : confirmarDescuento(items)
+    Ped --&gt; GW : 201 pedido SB-XXXX
+    GW --&gt; UI : resumen del pedido
+    UI --&gt; Cliente : muestra ID y detalle
+  else pago rechazado
+    Ped -&gt; DBP : guardar(pedido, RECHAZADO)
+    Ped -&gt;&gt; Cat : liberarStock(items)
+    Ped --&gt; GW : 402 Pago rechazado
+    GW --&gt; UI : error
+    UI --&gt; Cliente : aviso &quot;pago rechazado&quot;
+  end
+end
+deactivate Ped
+deactivate GW
+@enduml
+</code></pre>
+          </details>
+        </figure>
+        <figure class="rounded-2xl bg-white border-2 border-tinta overflow-hidden">
+          <button type="button" data-ampliar="diagramas/actividad_filtrado.svg" data-titulo="Actividad del filtrado del catálogo (RF01)" class="block w-full bg-white p-3 md:p-5 cursor-zoom-in" aria-label="Ampliar Actividad del filtrado del catálogo (RF01)">
+            <img src="diagramas/actividad_filtrado.svg" alt="Actividad del filtrado del catálogo (RF01) de Sockbuster" class="mx-auto max-h-[640px] w-auto" loading="lazy">
+          </button>
+          <figcaption class="flex flex-wrap items-center justify-between gap-2 border-t-2 border-tinta bg-crema px-4 py-2 text-sm">
+            <span class="font-bold">Actividad del filtrado del catálogo (RF01)</span>
+            <span class="flex gap-3">
+              <a href="diagramas/actividad_filtrado.svg" target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">Abrir SVG</a>
+              <a href="diagramas/actividad_filtrado.puml" download class="font-semibold underline underline-offset-4">Descargar .puml</a>
+            </span>
+          </figcaption>
+          <details class="border-t border-slate-200">
+            <summary class="cursor-pointer px-4 py-2 text-sm font-bold hover:bg-crema">Ver código PlantUML</summary>
+            <pre class="max-h-96 overflow-auto bg-tinta text-crema text-xs leading-relaxed p-4"><code>@startuml actividad_filtrado
+!theme plain
+skinparam defaultFontName &quot;Segoe UI&quot;
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam activityBackgroundColor #EEF2FF
+skinparam activityBorderColor #4F46E5
+skinparam activityDiamondBackgroundColor #FEF3C7
+skinparam activityDiamondBorderColor #CA8A04
+skinparam swimlaneBorderColor #CBD5E1
+skinparam swimlaneTitleFontStyle bold
+
+title Vista de Procesos — Filtrado del catálogo (RF01)
+
+|Cliente|
+start
+:Elige colección, talla,\nprecio máximo o texto;
+|catalogo.html|
+:Espera 250 ms sin cambios\n(debounce);
+:ApiGateway.get(&quot;/catalogo&quot;, filtros);
+|CatalogoService|
+fork
+  :Buscar calcetines\nde la colección;
+fork again
+  :Calcular promedio\nde estrellas (BD Reseñas);
+end fork
+:Filtrar por talla, precio y texto;
+:Ordenar resultados;
+|catalogo.html|
+if (¿Hay resultados?) then (sí)
+  :Dibujar tarjetas con foto,\nprecio, stock y tallas;
+else (no)
+  :Mostrar &quot;No hay calcetines\ncon esos filtros&quot;;
+endif
+|Cliente|
+:Revisa resultados o abre la ficha;
+stop
+@enduml
+</code></pre>
+          </details>
+        </figure></div>
+        <aside class="rounded-2xl bg-white border-2 border-tinta p-5 lg:sticky lg:top-24">
+          <p class="text-xs font-bold uppercase tracking-widest text-rosa">Diagramas de Secuencia y de Actividad</p>
+          <h2 class="font-display text-2xl mt-1">Vista de Procesos</h2>
+          <p class="mt-3 text-slate-700 leading-relaxed"><b>Checkout.</b> Es el proceso más delicado, porque dos clientes pueden querer el último par al mismo tiempo. PedidoService hace en paralelo (bloque <code>par</code>) la reserva de stock y el cálculo del total. La reserva es una sección crítica: en el código se encola con una promesa (<code>colaReservas</code>) para que se atienda de a una. Si falta stock se responde 409 y no se llama a la pasarela. Si la pasarela rechaza el pago, el pedido queda RECHAZADO y el stock se libera con un mensaje asíncrono.</p><p class="mt-3 text-slate-700 leading-relaxed"><b>Filtrado.</b> Cuando el cliente cambia un filtro, la página espera 250 ms sin cambios (<i>debounce</i>) para no consultar por cada letra. CatalogoService busca los calcetines de la colección y calcula el promedio de estrellas al mismo tiempo (fork, que en el código es un <code>Promise.all</code>), y después filtra por talla, precio y texto y ordena el resultado.</p>
+          <p class="mt-5 font-bold text-sm uppercase tracking-wider text-rosa">Requerimientos que cubre</p>
+          <div class="mt-2 flex flex-wrap gap-1.5"><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF01</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF02</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RNF01</span></div>
+          <div class="mt-5"><p class="font-bold text-sm uppercase tracking-wider text-rosa">En el código del sitio</p><ul class="mt-1 divide-y divide-slate-200 text-sm"><li class="py-2"><code class="font-bold text-tinta">PedidoService.checkout()</code><span class="block text-slate-600">Promise.all entre reservarStock() y el total, luego PasarelaPago.cobrar() con alt aprobado/rechazado.</span></li><li class="py-2"><code class="font-bold text-tinta">CatalogoService.reservarStock()</code><span class="block text-slate-600">Cola de promesas que evita vender dos veces la última unidad.</span></li><li class="py-2"><code class="font-bold text-tinta">CatalogoService.buscar()</code><span class="block text-slate-600">Fork de búsqueda y promedios con Promise.all.</span></li><li class="py-2"><code class="font-bold text-tinta">js/catalogo.js</code><span class="block text-slate-600">Debounce de 250 ms en el buscador y el control de precio.</span></li></ul></div>
+        </aside>
+      </div>
+      
+    </section>
+    <section id="panel-fisica" role="tabpanel" aria-labelledby="tab-fisica" data-panel="fisica" class="vista hidden">
+      <div class="grid lg:grid-cols-[1fr_340px] gap-6 items-start">
+        <div class="space-y-6 min-w-0">
+        <figure class="rounded-2xl bg-white border-2 border-tinta overflow-hidden">
+          <button type="button" data-ampliar="diagramas/despliegue.svg" data-titulo="Diagrama de despliegue" class="block w-full bg-white p-3 md:p-5 cursor-zoom-in" aria-label="Ampliar Diagrama de despliegue">
+            <img src="diagramas/despliegue.svg" alt="Diagrama de despliegue de Sockbuster" class="mx-auto max-h-[640px] w-auto" loading="lazy">
+          </button>
+          <figcaption class="flex flex-wrap items-center justify-between gap-2 border-t-2 border-tinta bg-crema px-4 py-2 text-sm">
+            <span class="font-bold">Diagrama de despliegue</span>
+            <span class="flex gap-3">
+              <a href="diagramas/despliegue.svg" target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">Abrir SVG</a>
+              <a href="diagramas/despliegue.puml" download class="font-semibold underline underline-offset-4">Descargar .puml</a>
+            </span>
+          </figcaption>
+          <details class="border-t border-slate-200">
+            <summary class="cursor-pointer px-4 py-2 text-sm font-bold hover:bg-crema">Ver código PlantUML</summary>
+            <pre class="max-h-96 overflow-auto bg-tinta text-crema text-xs leading-relaxed p-4"><code>@startuml despliegue
+!theme plain
+skinparam defaultFontName &quot;Segoe UI&quot;
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 80
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam nodeBackgroundColor #F8FAFC
+skinparam nodeBorderColor #64748B
+skinparam artifactBackgroundColor #EEF2FF
+skinparam artifactBorderColor #4F46E5
+skinparam databaseBackgroundColor #DCFCE7
+skinparam databaseBorderColor #16A34A
+skinparam cloudBackgroundColor #FFF7ED
+skinparam cloudBorderColor #EA580C
+skinparam noteBackgroundColor #FEFCE8
+skinparam noteBorderColor #CA8A04
+
+title Vista Física — Sockbuster Video &amp; Socks
+
+node &quot;Dispositivo del cliente\n----\nNavegador web&quot; as Nav
+
+cloud &quot;CDN GitHub Pages\n----\nindex.html · catalogo.html\ndiagramas.html · css · js · svg&quot; as CDN
+node &quot;Balanceador NGINX&quot; as LB
+
+node &quot;Servidor App 1\n----\nNode.js · Docker\nAPI Gateway + servicios&quot; as App1
+node &quot;Servidor App 2\n----\nNode.js · Docker\nAPI Gateway + servicios&quot; as App2
+
+database &quot;PostgreSQL\nprimaria&quot; as DB1
+database &quot;PostgreSQL\nréplica&quot; as DB2
+cloud &quot;Pasarela de Pago&quot; as PG
+
+Nav --&gt; CDN : HTTPS
+Nav --&gt; LB : HTTPS · JWT
+CDN -[hidden]right- LB
+
+LB --&gt; App1
+LB --&gt; App2
+App1 -[hidden]right- App2
+
+App1 --&gt; DB1
+App2 --&gt; DB1
+DB1 -right-&gt; DB2
+DB2 -[hidden]right- PG
+App2 --&gt; PG
+
+note right of LB
+  TLS 1.3
+  Reparte la carga
+  entre 2 réplicas
+end note
+note bottom of DB1
+  TCP 5432
+  AES-256 en reposo
+end note
+note bottom of DB2
+  Replicación
+  asíncrona
+end note
+note bottom of CDN
+  Carga inicial &lt; 2 s
+end note
+@enduml
+</code></pre>
+          </details>
+        </figure></div>
+        <aside class="rounded-2xl bg-white border-2 border-tinta p-5 lg:sticky lg:top-24">
+          <p class="text-xs font-bold uppercase tracking-widest text-rosa">Diagrama de Despliegue</p>
+          <h2 class="font-display text-2xl mt-1">Vista Física</h2>
+          <p class="mt-3 text-slate-700 leading-relaxed">El sitio que entregamos es estático y está publicado en <b>GitHub Pages</b>, que lo sirve por HTTPS desde su CDN. Con eso cumplimos el RNF01: no hay servidor que mantener y la carga inicial son pocos archivos livianos (el CSS ya va compilado y las fotos de los calcetines son SVG que se dibujan en el navegador, así que no hay imágenes pesadas).</p><p class="mt-3 text-slate-700 leading-relaxed">El resto del diagrama es la infraestructura que proponemos para producción: un balanceador <b>NGINX</b> con TLS 1.3 que reparte las peticiones entre dos servidores Node.js en Docker (si uno se cae, el otro sigue atendiendo), una base <b>PostgreSQL</b> primaria con una réplica y los datos cifrados con AES-256 en reposo. El navegador envía el JWT en cada petición a la API.</p>
+          <p class="mt-5 font-bold text-sm uppercase tracking-wider text-rosa">Requerimientos que cubre</p>
+          <div class="mt-2 flex flex-wrap gap-1.5"><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RNF01</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RNF02</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF02</span></div>
+          <div class="mt-5"><p class="font-bold text-sm uppercase tracking-wider text-rosa">En el código del sitio</p><ul class="mt-1 divide-y divide-slate-200 text-sm"><li class="py-2"><code class="font-bold text-tinta">GitHub Pages</code><span class="block text-slate-600">Publica la rama main del repositorio con HTTPS automático.</span></li><li class="py-2"><code class="font-bold text-tinta">Balanceador NGINX</code><span class="block text-slate-600">Termina TLS 1.3 y reparte la carga (propuesta de producción).</span></li><li class="py-2"><code class="font-bold text-tinta">Servidores App 1 y 2</code><span class="block text-slate-600">Ejecutarían gateway.js y servicios.js en Node.js dentro de Docker.</span></li><li class="py-2"><code class="font-bold text-tinta">PostgreSQL primaria + réplica</code><span class="block text-slate-600">Reemplazaría a localStorage; puerto 5432 solo accesible desde la red interna.</span></li></ul></div>
+        </aside>
+      </div>
+      
+    </section>
+    <section id="panel-escenarios" role="tabpanel" aria-labelledby="tab-escenarios" data-panel="escenarios" class="vista hidden">
+      <div class="grid lg:grid-cols-[1fr_340px] gap-6 items-start">
+        <div class="space-y-6 min-w-0">
+        <figure class="rounded-2xl bg-white border-2 border-tinta overflow-hidden">
+          <button type="button" data-ampliar="diagramas/casos_uso.svg" data-titulo="Diagrama de casos de uso" class="block w-full bg-white p-3 md:p-5 cursor-zoom-in" aria-label="Ampliar Diagrama de casos de uso">
+            <img src="diagramas/casos_uso.svg" alt="Diagrama de casos de uso de Sockbuster" class="mx-auto max-h-[640px] w-auto" loading="lazy">
+          </button>
+          <figcaption class="flex flex-wrap items-center justify-between gap-2 border-t-2 border-tinta bg-crema px-4 py-2 text-sm">
+            <span class="font-bold">Diagrama de casos de uso</span>
+            <span class="flex gap-3">
+              <a href="diagramas/casos_uso.svg" target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">Abrir SVG</a>
+              <a href="diagramas/casos_uso.puml" download class="font-semibold underline underline-offset-4">Descargar .puml</a>
+            </span>
+          </figcaption>
+          <details class="border-t border-slate-200">
+            <summary class="cursor-pointer px-4 py-2 text-sm font-bold hover:bg-crema">Ver código PlantUML</summary>
+            <pre class="max-h-96 overflow-auto bg-tinta text-crema text-xs leading-relaxed p-4"><code>@startuml casos_uso
+!theme plain
+skinparam defaultFontName &quot;Segoe UI&quot;
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam linetype polyline
+skinparam nodesep 40
+skinparam ranksep 90
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #CBD5E1
+skinparam rectangleBackgroundColor #F8FAFC
+skinparam rectangleBorderColor #CBD5E1
+skinparam usecaseBackgroundColor #EEF2FF
+skinparam usecaseBorderColor #4F46E5
+skinparam actorBorderColor #334155
+skinparam actorBackgroundColor #FFFFFF
+left to right direction
+
+title Escenarios (Casos de Uso) — Sockbuster Video &amp; Socks
+
+actor &quot;Cliente&quot; as Cliente
+actor &quot;Administrador&quot; as Admin
+actor &quot;Pasarela de Pago\n(simulada)&quot; as Pasarela
+
+rectangle &quot;Sistema Sockbuster&quot; {
+  usecase &quot;Explorar y filtrar\ncatálogo (RF01)&quot; as UC1
+  usecase &quot;Gestionar carrito\n(RF02)&quot; as UC3
+  usecase &quot;Realizar checkout\n(RF02)&quot; as UC4
+  usecase &quot;Publicar reseña\n(RF04)&quot; as UC6
+  usecase &quot;Registrar modelo y\ntemática (RF03)&quot; as UC8
+  usecase &quot;Actualizar stock\ny precio (RF03)&quot; as UC9
+  usecase &quot;Ver ficha del\nproducto (RF01)&quot; as UC2
+  usecase &quot;Simular pago&quot; as UC5
+  usecase &quot;Iniciar sesión\n(JWT · RNF02)&quot; as UC7
+}
+
+Cliente --&gt; UC1
+Cliente --&gt; UC3
+Cliente --&gt; UC4
+Cliente --&gt; UC6
+Admin --&gt; UC8
+Admin --&gt; UC9
+
+UC1 &lt;.. UC2 : &lt;&lt;extend&gt;&gt;
+UC4 ..&gt; UC5 : &lt;&lt;include&gt;&gt;
+UC6 ..&gt; UC7 : &lt;&lt;include&gt;&gt;
+UC8 ..&gt; UC7 : &lt;&lt;include&gt;&gt;
+UC9 ..&gt; UC7 : &lt;&lt;include&gt;&gt;
+
+UC5 --&gt; Pasarela
+@enduml
+</code></pre>
+          </details>
+        </figure></div>
+        <aside class="rounded-2xl bg-white border-2 border-tinta p-5 lg:sticky lg:top-24">
+          <p class="text-xs font-bold uppercase tracking-widest text-rosa">Diagrama de Casos de Uso (+1)</p>
+          <h2 class="font-display text-2xl mt-1">Escenarios</h2>
+          <p class="mt-3 text-slate-700 leading-relaxed">Esta vista une a las otras cuatro: cada caso de uso sale de un requerimiento y se puede seguir en todos los diagramas. Por ejemplo, <b>Realizar checkout</b> incluye <b>Simular pago</b> (que usa la pasarela externa), en la vista lógica está modelado con Carrito y Pedido, en la de desarrollo lo atiende PedidoService, en la de procesos está su secuencia completa y en la física corre en los servidores de aplicación.</p><p class="mt-3 text-slate-700 leading-relaxed">Las funciones de administración y la publicación de reseñas incluyen <b>Iniciar sesión</b>, porque las dos necesitan el JWT (RNF02). Ver la ficha del producto extiende a explorar el catálogo, ya que se llega a ella desde una tarjeta.</p>
+          <p class="mt-5 font-bold text-sm uppercase tracking-wider text-rosa">Requerimientos que cubre</p>
+          <div class="mt-2 flex flex-wrap gap-1.5"><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF01</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF02</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF03</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF04</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RNF02</span></div>
+          
+        </aside>
+      </div>
+      <div class="mt-8"><h3 class="font-display text-xl">Historias de usuario</h3><ul class="mt-3 grid md:grid-cols-2 gap-3"><li class="rounded-xl bg-white border-2 border-tinta p-4">
+            <span class="px-2 py-0.5 rounded bg-tinta text-amarillo text-xs font-bold">RF01</span>
+            <p class="mt-2 font-semibold">Como fanático quiero filtrar los calcetines por colección y talla para encontrar rápido uno de mi película favorita.</p>
+            <p class="mt-1 text-sm text-slate-600"><b>Criterio de aceptación:</b> Al elegir &quot;Terror 80s&quot; y talla 39-42 solo aparecen modelos de esa colección con esa talla, cada uno con foto, precio, stock y tallas.</p></li><li class="rounded-xl bg-white border-2 border-tinta p-4">
+            <span class="px-2 py-0.5 rounded bg-tinta text-amarillo text-xs font-bold">RF02</span>
+            <p class="mt-2 font-semibold">Como cliente quiero ajustar las cantidades del carrito y pagar para recibir un número de pedido.</p>
+            <p class="mt-1 text-sm text-slate-600"><b>Criterio de aceptación:</b> Al pagar con una tarjeta válida se muestra un resumen con un ID tipo SB-AAAAMMDD-XXXX y el stock baja. Si la tarjeta termina en 0000 el pago se rechaza y el stock no cambia.</p></li><li class="rounded-xl bg-white border-2 border-tinta p-4">
+            <span class="px-2 py-0.5 rounded bg-tinta text-amarillo text-xs font-bold">RF03</span>
+            <p class="mt-2 font-semibold">Como administrador quiero registrar un modelo nuevo asociado a una película o serie y actualizar su stock y precio.</p>
+            <p class="mt-1 text-sm text-slate-600"><b>Criterio de aceptación:</b> Sin un token con rol ADMIN el gateway responde 403. Con rol ADMIN el modelo aparece al tiro en el catálogo.</p></li><li class="rounded-xl bg-white border-2 border-tinta p-4">
+            <span class="px-2 py-0.5 rounded bg-tinta text-amarillo text-xs font-bold">RF04</span>
+            <p class="mt-2 font-semibold">Como usuario registrado quiero dejar de 1 a 5 estrellas y un comentario en la ficha de un producto.</p>
+            <p class="mt-1 text-sm text-slate-600"><b>Criterio de aceptación:</b> Sin sesión se pide ingresar. Con sesión la reseña se publica y el promedio de estrellas de la tarjeta se actualiza.</p></li></ul></div>
+    </section>
+    </div>
+
+    <section class="max-w-6xl mx-auto px-4 pb-6">
+      <h2 class="font-display text-2xl">Matriz de trazabilidad</h2>
+      <p class="mt-1 text-slate-600">Dónde queda resuelto cada requerimiento del caso en las cinco vistas.</p>
+      <div class="mt-4 rounded-2xl bg-white border-2 border-tinta overflow-x-auto">
+        <table class="w-full min-w-[860px] text-sm">
+          <thead class="bg-tinta text-crema text-left">
+            <tr><th class="px-3 py-2 w-48">Requerimiento</th><th class="px-3 py-2">Lógica</th><th class="px-3 py-2">Desarrollo</th><th class="px-3 py-2">Procesos</th><th class="px-3 py-2">Física</th><th class="px-3 py-2">Escenarios</th></tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200"><tr class="align-top"><th scope="row" class="px-3 py-3 text-left"><span class="px-2 py-0.5 rounded bg-tinta text-amarillo text-xs font-bold">RF01</span><span class="block mt-1 font-semibold">Catálogo por colecciones temáticas</span></th><td class="px-3 py-3 text-slate-700">Coleccion, Calcetin, Tematica</td><td class="px-3 py-3 text-slate-700">CatalogoService · BD Catálogo</td><td class="px-3 py-3 text-slate-700">Actividad de filtrado</td><td class="px-3 py-3 text-slate-700">CDN GitHub Pages</td><td class="px-3 py-3 text-slate-700">Explorar y filtrar catálogo · Ver ficha</td></tr><tr class="align-top"><th scope="row" class="px-3 py-3 text-left"><span class="px-2 py-0.5 rounded bg-tinta text-amarillo text-xs font-bold">RF02</span><span class="block mt-1 font-semibold">Carrito y gestión de pedidos</span></th><td class="px-3 py-3 text-slate-700">Carrito, ItemCarrito, Pedido, EstadoPedido</td><td class="px-3 py-3 text-slate-700">PedidoService · Pasarela</td><td class="px-3 py-3 text-slate-700">Secuencia de checkout</td><td class="px-3 py-3 text-slate-700">Servidores App · PostgreSQL</td><td class="px-3 py-3 text-slate-700">Gestionar carrito · Realizar checkout</td></tr><tr class="align-top"><th scope="row" class="px-3 py-3 text-left"><span class="px-2 py-0.5 rounded bg-tinta text-amarillo text-xs font-bold">RF03</span><span class="block mt-1 font-semibold">Administración de inventario y temáticas</span></th><td class="px-3 py-3 text-slate-700">Calcetin, Tematica, Coleccion</td><td class="px-3 py-3 text-slate-700">ApiGateway (rol ADMIN) · CatalogoService</td><td class="px-3 py-3 text-slate-700">—</td><td class="px-3 py-3 text-slate-700">Servidores App</td><td class="px-3 py-3 text-slate-700">Registrar modelo · Actualizar stock y precio</td></tr><tr class="align-top"><th scope="row" class="px-3 py-3 text-left"><span class="px-2 py-0.5 rounded bg-tinta text-amarillo text-xs font-bold">RF04</span><span class="block mt-1 font-semibold">Reseñas de fanáticos</span></th><td class="px-3 py-3 text-slate-700">Usuario, Resena</td><td class="px-3 py-3 text-slate-700">ResenaService · BD Reseñas</td><td class="px-3 py-3 text-slate-700">—</td><td class="px-3 py-3 text-slate-700">Servidores App · PostgreSQL</td><td class="px-3 py-3 text-slate-700">Publicar reseña</td></tr><tr class="align-top"><th scope="row" class="px-3 py-3 text-left"><span class="px-2 py-0.5 rounded bg-tinta text-amarillo text-xs font-bold">RNF01</span><span class="block mt-1 font-semibold">Disponibilidad y despliegue en la nube</span></th><td class="px-3 py-3 text-slate-700">—</td><td class="px-3 py-3 text-slate-700">CSS compilado · SVG livianos</td><td class="px-3 py-3 text-slate-700">Debounce y fork en el filtrado</td><td class="px-3 py-3 text-slate-700">CDN · Balanceador · 2 réplicas</td><td class="px-3 py-3 text-slate-700">—</td></tr><tr class="align-top"><th scope="row" class="px-3 py-3 text-left"><span class="px-2 py-0.5 rounded bg-tinta text-amarillo text-xs font-bold">RNF02</span><span class="block mt-1 font-semibold">Seguridad: HTTPS y JWT</span></th><td class="px-3 py-3 text-slate-700">Usuario.rol (Rol)</td><td class="px-3 py-3 text-slate-700">ApiGateway · AuthService · BD Usuarios</td><td class="px-3 py-3 text-slate-700">—</td><td class="px-3 py-3 text-slate-700">TLS 1.3 · AES-256 en reposo</td><td class="px-3 py-3 text-slate-700">Iniciar sesión (JWT)</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-4 py-10">
+      <h2 class="font-display text-2xl">Decisiones y trade-offs</h2>
+      <div class="mt-4 grid md:grid-cols-2 gap-4">
+        <div class="rounded-2xl bg-white border-2 border-tinta p-5">
+          <p class="font-bold">Sitio estático en GitHub Pages</p>
+          <p class="mt-2 text-slate-700">Es gratis, se publica solo con cada cambio y carga rápido. A cambio, los datos del prototipo viven en el navegador (localStorage), así que cada visitante ve su propia copia del inventario y de los pedidos.</p>
+        </div>
+        <div class="rounded-2xl bg-white border-2 border-tinta p-5">
+          <p class="font-bold">Un solo API Gateway</p>
+          <p class="mt-2 text-slate-700">Centraliza la validación del JWT y los permisos, y las páginas no conocen los servicios. El costo es que pasa a ser un punto único de falla, por eso en la vista física hay dos réplicas detrás del balanceador.</p>
+        </div>
+        <div class="rounded-2xl bg-white border-2 border-tinta p-5">
+          <p class="font-bold">Una base de datos por servicio</p>
+          <p class="mt-2 text-slate-700">Separa los datos de seguridad de los del negocio y permite escalar cada parte por separado. Lo malo es que un reporte que cruce datos (por ejemplo, ventas por película) necesita consultar a varios servicios.</p>
+        </div>
+        <div class="rounded-2xl bg-white border-2 border-tinta p-5">
+          <p class="font-bold">JWT firmado en el navegador</p>
+          <p class="mt-2 text-slate-700">En el prototipo el token se firma con Web Crypto (HS256) para poder mostrar el flujo sin servidor, pero la clave queda visible en el JavaScript. En producción la firma la tiene que hacer AuthService en el servidor y la clave nunca debe llegar al cliente.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="pie"></footer>
+
+  <dialog id="dlg-diagrama" class="w-[min(100%-1rem,1200px)] h-[90vh] rounded-2xl border-2 border-tinta p-0 backdrop:bg-tinta/70">
+    <div class="h-full flex flex-col">
+      <div class="flex items-center justify-between gap-3 px-4 py-3 bg-tinta text-crema">
+        <p id="dlg-diagrama-titulo" class="font-bold"></p>
+        <button data-cerrar class="w-9 h-9 rounded-lg hover:bg-white/10 text-xl" aria-label="Cerrar">×</button>
+      </div>
+      <div class="flex-1 overflow-auto bg-white p-4"><img id="dlg-diagrama-img" alt="" class="mx-auto max-w-none"></div>
+    </div>
+  </dialog>
+
+  <script src="js/modelo.js"></script>
+  <script src="js/datos.js"></script>
+  <script src="js/servicios.js"></script>
+  <script src="js/gateway.js"></script>
+  <script src="js/comun.js"></script>
+  <script src="js/diagramas.js"></script>
+</body>
+</html>

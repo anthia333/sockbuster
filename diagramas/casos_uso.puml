@@ -1,0 +1,55 @@
+@startuml casos_uso
+!theme plain
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam linetype polyline
+skinparam nodesep 40
+skinparam ranksep 90
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #CBD5E1
+skinparam rectangleBackgroundColor #F8FAFC
+skinparam rectangleBorderColor #CBD5E1
+skinparam usecaseBackgroundColor #EEF2FF
+skinparam usecaseBorderColor #4F46E5
+skinparam actorBorderColor #334155
+skinparam actorBackgroundColor #FFFFFF
+left to right direction
+
+title Escenarios (Casos de Uso) — Sockbuster Video & Socks
+
+actor "Cliente" as Cliente
+actor "Administrador" as Admin
+actor "Pasarela de Pago\n(simulada)" as Pasarela
+
+rectangle "Sistema Sockbuster" {
+  usecase "Explorar y filtrar\ncatálogo (RF01)" as UC1
+  usecase "Gestionar carrito\n(RF02)" as UC3
+  usecase "Realizar checkout\n(RF02)" as UC4
+  usecase "Publicar reseña\n(RF04)" as UC6
+  usecase "Registrar modelo y\ntemática (RF03)" as UC8
+  usecase "Actualizar stock\ny precio (RF03)" as UC9
+  usecase "Ver ficha del\nproducto (RF01)" as UC2
+  usecase "Simular pago" as UC5
+  usecase "Iniciar sesión\n(JWT · RNF02)" as UC7
+}
+
+Cliente --> UC1
+Cliente --> UC3
+Cliente --> UC4
+Cliente --> UC6
+Admin --> UC8
+Admin --> UC9
+
+UC1 <.. UC2 : <<extend>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC8 ..> UC7 : <<include>>
+UC9 ..> UC7 : <<include>>
+
+UC5 --> Pasarela
+@enduml

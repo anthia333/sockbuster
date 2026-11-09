@@ -1,0 +1,42 @@
+@startuml actividad_filtrado
+!theme plain
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam activityBackgroundColor #EEF2FF
+skinparam activityBorderColor #4F46E5
+skinparam activityDiamondBackgroundColor #FEF3C7
+skinparam activityDiamondBorderColor #CA8A04
+skinparam swimlaneBorderColor #CBD5E1
+skinparam swimlaneTitleFontStyle bold
+
+title Vista de Procesos — Filtrado del catálogo (RF01)
+
+|Cliente|
+start
+:Elige colección, talla,\nprecio máximo o texto;
+|catalogo.html|
+:Espera 250 ms sin cambios\n(debounce);
+:ApiGateway.get("/catalogo", filtros);
+|CatalogoService|
+fork
+  :Buscar calcetines\nde la colección;
+fork again
+  :Calcular promedio\nde estrellas (BD Reseñas);
+end fork
+:Filtrar por talla, precio y texto;
+:Ordenar resultados;
+|catalogo.html|
+if (¿Hay resultados?) then (sí)
+  :Dibujar tarjetas con foto,\nprecio, stock y tallas;
+else (no)
+  :Mostrar "No hay calcetines\ncon esos filtros";
+endif
+|Cliente|
+:Revisa resultados o abre la ficha;
+stop
+@enduml

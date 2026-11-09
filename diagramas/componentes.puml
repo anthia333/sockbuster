@@ -1,0 +1,78 @@
+@startuml componentes
+!theme plain
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam linetype ortho
+skinparam nodesep 45
+skinparam ranksep 70
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #CBD5E1
+skinparam componentBackgroundColor #EEF2FF
+skinparam componentBorderColor #4F46E5
+skinparam databaseBackgroundColor #DCFCE7
+skinparam databaseBorderColor #16A34A
+skinparam cloudBackgroundColor #FFF7ED
+skinparam cloudBorderColor #EA580C
+skinparam noteBackgroundColor #FEFCE8
+skinparam noteBorderColor #CA8A04
+
+title Vista de Desarrollo — Sockbuster Video & Socks
+
+package "Presentación (HTML5 · Tailwind CSS · JavaScript)" {
+  [Inicio\nindex.html] as Inicio
+  [Catálogo y Carrito\ncatalogo.html] as Catalogo
+  [Panel Admin\ncatalogo.html#admin] as Panel
+}
+
+[ApiGateway\ngateway.js] as GW #FCE7F3
+note right of GW
+  Punto único de entrada
+  HTTPS · verifica JWT (HS256)
+  Rol ADMIN para RF03
+end note
+
+package "Servicios (servicios.js)" {
+  [AuthService] as Auth
+  [CatalogoService] as Cat
+  [ResenaService] as Res
+  [PedidoService] as Ped
+}
+
+package "Datos (datos.js · localStorage)" {
+  database "BD Usuarios" as DBU
+  database "BD Catálogo" as DBC
+  database "BD Reseñas" as DBR
+  database "BD Pedidos" as DBP
+}
+cloud "Externos" {
+  [Pasarela de Pago\n(simulada)] as PG
+}
+
+Inicio -[hidden]right- Catalogo
+Catalogo -[hidden]right- Panel
+Catalogo ..> GW
+Panel ..> GW
+
+Auth -[hidden]right- Cat
+Cat -[hidden]right- Res
+Res -[hidden]right- Ped
+DBU -[hidden]right- DBC
+DBC -[hidden]right- DBR
+DBR -[hidden]right- DBP
+
+GW ..> Auth
+GW ..> Cat
+GW ..> Res
+GW ..> Ped
+
+Auth ..> DBU
+Cat ..> DBC
+Res ..> DBR
+Ped ..> DBP
+Ped ..> PG
+@enduml

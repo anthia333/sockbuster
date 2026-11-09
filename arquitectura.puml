@@ -1,0 +1,458 @@
+@startuml casos_uso
+!theme plain
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam linetype polyline
+skinparam nodesep 40
+skinparam ranksep 90
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #CBD5E1
+skinparam rectangleBackgroundColor #F8FAFC
+skinparam rectangleBorderColor #CBD5E1
+skinparam usecaseBackgroundColor #EEF2FF
+skinparam usecaseBorderColor #4F46E5
+skinparam actorBorderColor #334155
+skinparam actorBackgroundColor #FFFFFF
+left to right direction
+
+title Escenarios (Casos de Uso) — Sockbuster Video & Socks
+
+actor "Cliente" as Cliente
+actor "Administrador" as Admin
+actor "Pasarela de Pago\n(simulada)" as Pasarela
+
+rectangle "Sistema Sockbuster" {
+  usecase "Explorar y filtrar\ncatálogo (RF01)" as UC1
+  usecase "Gestionar carrito\n(RF02)" as UC3
+  usecase "Realizar checkout\n(RF02)" as UC4
+  usecase "Publicar reseña\n(RF04)" as UC6
+  usecase "Registrar modelo y\ntemática (RF03)" as UC8
+  usecase "Actualizar stock\ny precio (RF03)" as UC9
+  usecase "Ver ficha del\nproducto (RF01)" as UC2
+  usecase "Simular pago" as UC5
+  usecase "Iniciar sesión\n(JWT · RNF02)" as UC7
+}
+
+Cliente --> UC1
+Cliente --> UC3
+Cliente --> UC4
+Cliente --> UC6
+Admin --> UC8
+Admin --> UC9
+
+UC1 <.. UC2 : <<extend>>
+UC4 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC8 ..> UC7 : <<include>>
+UC9 ..> UC7 : <<include>>
+
+UC5 --> Pasarela
+@enduml
+
+@startuml clases
+!theme plain
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam linetype ortho
+skinparam nodesep 110
+skinparam ranksep 80
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam minClassWidth 220
+skinparam classBorderColor #475569
+hide empty members
+hide circle
+
+title Vista Lógica — Sockbuster Video & Socks
+
+enum Rol #F1F5F9 {
+  CLIENTE
+  ADMIN
+}
+class Coleccion #E0E7FF {
+  - id : String
+  - nombre : String
+  - descripcion : String
+  --
+  + agregarCalcetin(calcetin) : void
+  + filtrar(talla, precioMax) : List<Calcetin>
+}
+
+class Usuario #DCFCE7 {
+  - id : String
+  - nombre : String
+  - email : String
+  - rol : Rol
+  --
+  + iniciarSesion(email, password) : String
+  + publicarResena(resena) : void
+}
+class Resena #DCFCE7 {
+  - id : String
+  - estrellas : int
+  - comentario : String
+  - fecha : Date
+  --
+  + esValida() : boolean
+}
+class Calcetin #E0E7FF {
+  - sku : String
+  - nombre : String
+  - precio : int
+  - stock : int
+  - tallas : List<String>
+  - foto : String
+  --
+  + actualizarStock(cantidad) : void
+  + cambiarPrecio(precio) : void
+  + asociarTematica(tematica) : void
+  + promedioEstrellas() : double
+}
+class Tematica #E0E7FF {
+  - id : String
+  - titulo : String
+  - tipo : String
+  - anio : int
+}
+
+class Carrito #FEF3C7 {
+  - id : String
+  --
+  + agregar(calcetin, talla, cantidad) : void
+  + modificarCantidad(item, cantidad) : void
+  + calcularTotal() : int
+  + checkout() : Pedido
+}
+class ItemCarrito #FEF3C7 {
+  - talla : String
+  - cantidad : int
+  - precioUnitario : int
+  --
+  + subtotal() : int
+}
+
+class Pedido #FEF3C7 {
+  - id : String
+  - fecha : DateTime
+  - total : int
+  - estado : EstadoPedido
+  --
+  + generarResumen() : String
+}
+enum EstadoPedido #F1F5F9 {
+  PENDIENTE
+  PAGADO
+  RECHAZADO
+}
+
+Rol -[hidden]right- Coleccion
+Rol <.. Usuario
+
+Coleccion "1" o-down- "0..*" Calcetin : agrupa
+
+Usuario "1" -right- "0..*" Resena : escribe
+Resena "0..*" -right- "1" Calcetin : evalúa
+Calcetin "0..*" -right- "1" Tematica : inspirado en
+
+Usuario "1" -down- "0..*" Carrito : arma
+Calcetin "1" -down- "0..*" ItemCarrito : referencia
+Carrito "1" *-right- "1..*" ItemCarrito : contiene
+
+Carrito "1" -down- "0..1" Pedido : confirma
+Pedido -[hidden]right- EstadoPedido
+Pedido ..> EstadoPedido
+
+legend bottom right
+  <b>Módulos</b>
+  |<back:#E0E7FF>      </back>| Catálogo |
+  |<back:#DCFCE7>      </back>| Usuarios y reseñas |
+  |<back:#FEF3C7>      </back>| Ventas |
+  |<back:#F1F5F9>      </back>| Enumeraciones |
+endlegend
+@enduml
+
+@startuml componentes
+!theme plain
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam linetype ortho
+skinparam nodesep 45
+skinparam ranksep 70
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #CBD5E1
+skinparam componentBackgroundColor #EEF2FF
+skinparam componentBorderColor #4F46E5
+skinparam databaseBackgroundColor #DCFCE7
+skinparam databaseBorderColor #16A34A
+skinparam cloudBackgroundColor #FFF7ED
+skinparam cloudBorderColor #EA580C
+skinparam noteBackgroundColor #FEFCE8
+skinparam noteBorderColor #CA8A04
+
+title Vista de Desarrollo — Sockbuster Video & Socks
+
+package "Presentación (HTML5 · Tailwind CSS · JavaScript)" {
+  [Inicio\nindex.html] as Inicio
+  [Catálogo y Carrito\ncatalogo.html] as Catalogo
+  [Panel Admin\ncatalogo.html#admin] as Panel
+}
+
+[ApiGateway\ngateway.js] as GW #FCE7F3
+note right of GW
+  Punto único de entrada
+  HTTPS · verifica JWT (HS256)
+  Rol ADMIN para RF03
+end note
+
+package "Servicios (servicios.js)" {
+  [AuthService] as Auth
+  [CatalogoService] as Cat
+  [ResenaService] as Res
+  [PedidoService] as Ped
+}
+
+package "Datos (datos.js · localStorage)" {
+  database "BD Usuarios" as DBU
+  database "BD Catálogo" as DBC
+  database "BD Reseñas" as DBR
+  database "BD Pedidos" as DBP
+}
+cloud "Externos" {
+  [Pasarela de Pago\n(simulada)] as PG
+}
+
+Inicio -[hidden]right- Catalogo
+Catalogo -[hidden]right- Panel
+Catalogo ..> GW
+Panel ..> GW
+
+Auth -[hidden]right- Cat
+Cat -[hidden]right- Res
+Res -[hidden]right- Ped
+DBU -[hidden]right- DBC
+DBC -[hidden]right- DBR
+DBR -[hidden]right- DBP
+
+GW ..> Auth
+GW ..> Cat
+GW ..> Res
+GW ..> Ped
+
+Auth ..> DBU
+Cat ..> DBC
+Res ..> DBR
+Ped ..> DBP
+Ped ..> PG
+@enduml
+
+@startuml secuencia_checkout
+!theme plain
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam sequenceParticipantBackgroundColor #EEF2FF
+skinparam sequenceParticipantBorderColor #4F46E5
+skinparam sequenceLifeLineBorderColor #94A3B8
+skinparam sequenceGroupBackgroundColor #F1F5F9
+skinparam sequenceGroupBorderColor #94A3B8
+skinparam sequenceBoxBorderColor #CBD5E1
+skinparam databaseBackgroundColor #DCFCE7
+skinparam databaseBorderColor #16A34A
+skinparam noteBackgroundColor #FEFCE8
+skinparam noteBorderColor #CA8A04
+autonumber
+
+title Vista de Procesos — Checkout del carrito (RF02)
+
+actor Cliente
+participant "catalogo.html" as UI
+box "Backend" #F8FAFC
+  participant ApiGateway as GW #FCE7F3
+  participant PedidoService as Ped
+  participant CatalogoService as Cat
+  database "BD Pedidos" as DBP
+end box
+participant "Pasarela de Pago" as PG #FFF7ED
+
+== Armado del carrito ==
+Cliente -> UI : agregar(calcetin, talla, cantidad)
+UI -> UI : carrito.calcularTotal()
+Cliente -> UI : confirmar compra
+UI -> GW : POST /pedidos (carrito)
+activate GW
+GW -> Ped : checkout(carrito)
+activate Ped
+
+== Validación concurrente ==
+par
+  Ped -> Cat : reservarStock(items)
+  activate Cat
+  note right of Cat
+    Sección crítica: la reserva es atómica
+    para que dos clientes no compren
+    la última unidad al mismo tiempo
+  end note
+  Cat --> Ped : stock reservado
+  deactivate Cat
+else
+  Ped -> Ped : calcularTotal()
+end
+
+alt sin stock suficiente
+  Ped --> GW : 409 Stock insuficiente
+  GW --> UI : error
+  UI --> Cliente : aviso "sin stock en esa talla"
+else stock reservado
+  Ped -> PG : cobrar(total)
+  activate PG
+  PG --> Ped : resultado
+  deactivate PG
+  alt pago aprobado
+    Ped -> DBP : guardar(pedido, PAGADO)
+    Ped -> Cat : confirmarDescuento(items)
+    Ped --> GW : 201 pedido SB-XXXX
+    GW --> UI : resumen del pedido
+    UI --> Cliente : muestra ID y detalle
+  else pago rechazado
+    Ped -> DBP : guardar(pedido, RECHAZADO)
+    Ped ->> Cat : liberarStock(items)
+    Ped --> GW : 402 Pago rechazado
+    GW --> UI : error
+    UI --> Cliente : aviso "pago rechazado"
+  end
+end
+deactivate Ped
+deactivate GW
+@enduml
+
+@startuml actividad_filtrado
+!theme plain
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam activityBackgroundColor #EEF2FF
+skinparam activityBorderColor #4F46E5
+skinparam activityDiamondBackgroundColor #FEF3C7
+skinparam activityDiamondBorderColor #CA8A04
+skinparam swimlaneBorderColor #CBD5E1
+skinparam swimlaneTitleFontStyle bold
+
+title Vista de Procesos — Filtrado del catálogo (RF01)
+
+|Cliente|
+start
+:Elige colección, talla,\nprecio máximo o texto;
+|catalogo.html|
+:Espera 250 ms sin cambios\n(debounce);
+:ApiGateway.get("/catalogo", filtros);
+|CatalogoService|
+fork
+  :Buscar calcetines\nde la colección;
+fork again
+  :Calcular promedio\nde estrellas (BD Reseñas);
+end fork
+:Filtrar por talla, precio y texto;
+:Ordenar resultados;
+|catalogo.html|
+if (¿Hay resultados?) then (sí)
+  :Dibujar tarjetas con foto,\nprecio, stock y tallas;
+else (no)
+  :Mostrar "No hay calcetines\ncon esos filtros";
+endif
+|Cliente|
+:Revisa resultados o abre la ficha;
+stop
+@enduml
+
+@startuml despliegue
+!theme plain
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 80
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam nodeBackgroundColor #F8FAFC
+skinparam nodeBorderColor #64748B
+skinparam artifactBackgroundColor #EEF2FF
+skinparam artifactBorderColor #4F46E5
+skinparam databaseBackgroundColor #DCFCE7
+skinparam databaseBorderColor #16A34A
+skinparam cloudBackgroundColor #FFF7ED
+skinparam cloudBorderColor #EA580C
+skinparam noteBackgroundColor #FEFCE8
+skinparam noteBorderColor #CA8A04
+
+title Vista Física — Sockbuster Video & Socks
+
+node "Dispositivo del cliente\n----\nNavegador web" as Nav
+
+cloud "CDN GitHub Pages\n----\nindex.html · catalogo.html\ndiagramas.html · css · js · svg" as CDN
+node "Balanceador NGINX" as LB
+
+node "Servidor App 1\n----\nNode.js · Docker\nAPI Gateway + servicios" as App1
+node "Servidor App 2\n----\nNode.js · Docker\nAPI Gateway + servicios" as App2
+
+database "PostgreSQL\nprimaria" as DB1
+database "PostgreSQL\nréplica" as DB2
+cloud "Pasarela de Pago" as PG
+
+Nav --> CDN : HTTPS
+Nav --> LB : HTTPS · JWT
+CDN -[hidden]right- LB
+
+LB --> App1
+LB --> App2
+App1 -[hidden]right- App2
+
+App1 --> DB1
+App2 --> DB1
+DB1 -right-> DB2
+DB2 -[hidden]right- PG
+App2 --> PG
+
+note right of LB
+  TLS 1.3
+  Reparte la carga
+  entre 2 réplicas
+end note
+note bottom of DB1
+  TCP 5432
+  AES-256 en reposo
+end note
+note bottom of DB2
+  Replicación
+  asíncrona
+end note
+note bottom of CDN
+  Carga inicial < 2 s
+end note
+@enduml
+

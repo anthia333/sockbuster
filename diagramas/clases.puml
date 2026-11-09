@@ -1,0 +1,126 @@
+@startuml clases
+!theme plain
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam linetype ortho
+skinparam nodesep 110
+skinparam ranksep 80
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.4
+skinparam titleFontSize 18
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam minClassWidth 220
+skinparam classBorderColor #475569
+hide empty members
+hide circle
+
+title Vista Lógica — Sockbuster Video & Socks
+
+enum Rol #F1F5F9 {
+  CLIENTE
+  ADMIN
+}
+class Coleccion #E0E7FF {
+  - id : String
+  - nombre : String
+  - descripcion : String
+  --
+  + agregarCalcetin(calcetin) : void
+  + filtrar(talla, precioMax) : List<Calcetin>
+}
+
+class Usuario #DCFCE7 {
+  - id : String
+  - nombre : String
+  - email : String
+  - rol : Rol
+  --
+  + iniciarSesion(email, password) : String
+  + publicarResena(resena) : void
+}
+class Resena #DCFCE7 {
+  - id : String
+  - estrellas : int
+  - comentario : String
+  - fecha : Date
+  --
+  + esValida() : boolean
+}
+class Calcetin #E0E7FF {
+  - sku : String
+  - nombre : String
+  - precio : int
+  - stock : int
+  - tallas : List<String>
+  - foto : String
+  --
+  + actualizarStock(cantidad) : void
+  + cambiarPrecio(precio) : void
+  + asociarTematica(tematica) : void
+  + promedioEstrellas() : double
+}
+class Tematica #E0E7FF {
+  - id : String
+  - titulo : String
+  - tipo : String
+  - anio : int
+}
+
+class Carrito #FEF3C7 {
+  - id : String
+  --
+  + agregar(calcetin, talla, cantidad) : void
+  + modificarCantidad(item, cantidad) : void
+  + calcularTotal() : int
+  + checkout() : Pedido
+}
+class ItemCarrito #FEF3C7 {
+  - talla : String
+  - cantidad : int
+  - precioUnitario : int
+  --
+  + subtotal() : int
+}
+
+class Pedido #FEF3C7 {
+  - id : String
+  - fecha : DateTime
+  - total : int
+  - estado : EstadoPedido
+  --
+  + generarResumen() : String
+}
+enum EstadoPedido #F1F5F9 {
+  PENDIENTE
+  PAGADO
+  RECHAZADO
+}
+
+Rol -[hidden]right- Coleccion
+Rol <.. Usuario
+
+Coleccion "1" o-down- "0..*" Calcetin : agrupa
+
+Usuario "1" -right- "0..*" Resena : escribe
+Resena "0..*" -right- "1" Calcetin : evalúa
+Calcetin "0..*" -right- "1" Tematica : inspirado en
+
+Usuario "1" -down- "0..*" Carrito : arma
+Calcetin "1" -down- "0..*" ItemCarrito : referencia
+Carrito "1" *-right- "1..*" ItemCarrito : contiene
+
+Carrito "1" -down- "0..1" Pedido : confirma
+Pedido -[hidden]right- EstadoPedido
+Pedido ..> EstadoPedido
+
+legend bottom right
+  <b>Módulos</b>
+  |<back:#E0E7FF>      </back>| Catálogo |
+  |<back:#DCFCE7>      </back>| Usuarios y reseñas |
+  |<back:#FEF3C7>      </back>| Ventas |
+  |<back:#F1F5F9>      </back>| Enumeraciones |
+endlegend
+@enduml
