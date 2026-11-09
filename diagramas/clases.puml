@@ -112,8 +112,8 @@ Usuario "1" -down- "0..*" Carrito : arma
 Calcetin "1" -down- "0..*" ItemCarrito : referencia
 Carrito "1" *-right- "1..*" ItemCarrito : contiene
 
-Carrito "1" -down- "0..1" Pedido : confirma
-Pedido -[hidden]right- EstadoPedido
+Usuario "0..1" -down- "0..*" Pedido : realiza
+Pedido "0..1" -right- "1" Carrito : confirma
 Pedido ..> EstadoPedido
 
 legend bottom right

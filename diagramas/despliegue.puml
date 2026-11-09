@@ -23,21 +23,22 @@ skinparam noteBorderColor #CA8A04
 
 title Vista Física — Sockbuster Video & Socks
 
-node "Dispositivo del cliente\n----\nNavegador web" as Nav
+node "Cliente\n----\nPC o celular\nNavegador web" as Nav
 
-cloud "CDN Netlify\n----\nindex.html · catalogo.html\ndiagramas.html · css · js · svg" as CDN
-node "Balanceador NGINX" as LB
+cloud "Entorno Netlify (hosting estático)\n----\nCDN · HTTPS automático\nindex.html · catalogo.html\ndiagramas.html · css · js · svg" as CDN
 
-node "Servidor App 1\n----\nNode.js · Docker\nAPI Gateway + servicios" as App1
-node "Servidor App 2\n----\nNode.js · Docker\nAPI Gateway + servicios" as App2
-
-database "PostgreSQL\nprimaria" as DB1
-database "PostgreSQL\nréplica" as DB2
+node "Entorno de producción en la nube (Docker)" as Prod {
+  node "Servidor Web NGINX\n----\nBalanceador de carga\nTLS 1.3 · reparte entre 2 réplicas" as LB
+  node "Servidor App 1\n----\nNode.js\nAPI Gateway + servicios" as App1
+  node "Servidor App 2\n----\nNode.js\nAPI Gateway + servicios" as App2
+  database "Servidor BD\nPostgreSQL primaria" as DB1
+  database "Servidor BD\nPostgreSQL réplica" as DB2
+}
 cloud "Pasarela de Pago" as PG
 
 Nav --> CDN : HTTPS
 Nav --> LB : HTTPS · JWT
-CDN -[hidden]right- LB
+CDN -[hidden]right- Prod
 
 LB --> App1
 LB --> App2
@@ -46,21 +47,11 @@ App1 -[hidden]right- App2
 App1 --> DB1
 App2 --> DB1
 DB1 -right-> DB2
-DB2 -[hidden]right- PG
 App2 --> PG
 
-note right of LB
-  TLS 1.3
-  Reparte la carga
-  entre 2 réplicas
-end note
 note bottom of DB1
   TCP 5432
   AES-256 en reposo
-end note
-note bottom of DB2
-  Replicación
-  asíncrona
 end note
 note bottom of CDN
   Carga inicial < 2 s

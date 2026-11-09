@@ -298,7 +298,7 @@ const PedidoService = {
     return null;
   },
 
-  async checkout(carrito, pago) {
+  async checkout(carrito, pago, usuario = null) {
     if (!carrito || !carrito.items || carrito.items.length === 0) return { status: 400, error: "El carrito está vacío" };
     const errorPago = this.validarPago(pago);
     if (errorPago) return { status: 400, error: errorPago };
@@ -324,6 +324,7 @@ const PedidoService = {
       total: subtotal + envio,
       estado: EstadoPedido.PENDIENTE,
       cliente: { nombre: pago.nombre.trim(), email: pago.email.trim() },
+      usuarioId: usuario ? usuario.sub : null,
     });
 
     const resultado = await PasarelaPago.cobrar(pedido.total, String(pago.tarjeta).replace(/\s/g, ""));

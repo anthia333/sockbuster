@@ -161,8 +161,9 @@ class Carrito {
 }
 
 class Pedido {
-  constructor({ id, fecha, items, subtotal, envio, total, estado, cliente }) {
+  constructor({ id, fecha, items, subtotal, envio, total, estado, cliente, usuarioId = null }) {
     this.id = id;
+    this.usuarioId = usuarioId;
     this.fecha = fecha;
     this.items = items;
     this.subtotal = subtotal;

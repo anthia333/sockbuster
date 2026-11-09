@@ -195,8 +195,8 @@ Usuario &quot;1&quot; -down- &quot;0..*&quot; Carrito : arma
 Calcetin &quot;1&quot; -down- &quot;0..*&quot; ItemCarrito : referencia
 Carrito &quot;1&quot; *-right- &quot;1..*&quot; ItemCarrito : contiene
 
-Carrito &quot;1&quot; -down- &quot;0..1&quot; Pedido : confirma
-Pedido -[hidden]right- EstadoPedido
+Usuario &quot;0..1&quot; -down- &quot;0..*&quot; Pedido : realiza
+Pedido &quot;0..1&quot; -right- &quot;1&quot; Carrito : confirma
 Pedido ..&gt; EstadoPedido
 
 legend bottom right
@@ -213,7 +213,7 @@ endlegend
         <aside class="rounded-2xl bg-white border-2 border-tinta p-5 lg:sticky lg:top-24">
           <p class="text-xs font-bold uppercase tracking-widest text-rosa">Diagrama de Clases</p>
           <h2 class="font-display text-2xl mt-1">Vista Lógica</h2>
-          <p class="mt-3 text-slate-700 leading-relaxed">Representa las entidades del dominio de Sockbuster y cómo se relacionan. Dejamos <b>Calcetin</b> al centro porque es la clase con más relaciones: pertenece a una <b>Coleccion</b> (agregación, porque la colección agrupa modelos que pueden existir por sí solos), está inspirado en una <b>Tematica</b> que guarda si es película o serie, recibe <b>Resenas</b> y aparece en los <b>ItemCarrito</b>.</p><p class="mt-3 text-slate-700 leading-relaxed">La compra se lee por la izquierda. Un <b>Usuario</b> arma uno o más <b>Carritos</b>, cada carrito contiene sus ítems (composición: si se borra el carrito, se borran sus ítems) y al confirmar genera como máximo un <b>Pedido</b> con su <b>EstadoPedido</b>. El <b>Rol</b> del usuario (CLIENTE o ADMIN) es el dato que después viaja dentro del token JWT.</p>
+          <p class="mt-3 text-slate-700 leading-relaxed">Representa las entidades del dominio de Sockbuster y cómo se relacionan. Dejamos <b>Calcetin</b> al centro porque es la clase con más relaciones: pertenece a una <b>Coleccion</b> (agregación, porque la colección agrupa modelos que pueden existir por sí solos), está inspirado en una <b>Tematica</b> que guarda si es película o serie, recibe <b>Resenas</b> y aparece en los <b>ItemCarrito</b>.</p><p class="mt-3 text-slate-700 leading-relaxed">La compra se lee por la izquierda. Un <b>Usuario</b> arma uno o más <b>Carritos</b>, cada carrito contiene sus ítems (composición: si se borra el carrito, se borran sus ítems) y al confirmar genera como máximo un <b>Pedido</b> con su <b>EstadoPedido</b>. El Usuario además queda asociado a los pedidos que realiza (multiplicidad 0..1, porque un invitado también puede comprar). El <b>Rol</b> del usuario (CLIENTE o ADMIN) es el dato que después viaja dentro del token JWT.</p>
           <p class="mt-5 font-bold text-sm uppercase tracking-wider text-rosa">Requerimientos que cubre</p>
           <div class="mt-2 flex flex-wrap gap-1.5"><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF01</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF02</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF03</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF04</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RNF02</span></div>
           <div class="mt-5"><p class="font-bold text-sm uppercase tracking-wider text-rosa">En el código del sitio</p><ul class="mt-1 divide-y divide-slate-200 text-sm"><li class="py-2"><code class="font-bold text-tinta">js/modelo.js</code><span class="block text-slate-600">Las 10 clases y enumeraciones con los mismos atributos y métodos del diagrama.</span></li><li class="py-2"><code class="font-bold text-tinta">Coleccion.filtrar()</code><span class="block text-slate-600">Filtra por talla y precio máximo (RF01).</span></li><li class="py-2"><code class="font-bold text-tinta">Carrito.checkout()</code><span class="block text-slate-600">Envía el carrito al ApiGateway y devuelve el Pedido (RF02).</span></li><li class="py-2"><code class="font-bold text-tinta">Calcetin.actualizarStock() / cambiarPrecio()</code><span class="block text-slate-600">Validan que el stock no quede negativo y que el precio sea un entero positivo (RF03).</span></li><li class="py-2"><code class="font-bold text-tinta">Resena.esValida()</code><span class="block text-slate-600">Exige de 1 a 5 estrellas y un comentario de al menos 10 caracteres (RF04).</span></li></ul></div>
@@ -549,21 +549,22 @@ skinparam noteBorderColor #CA8A04
 
 title Vista Física — Sockbuster Video &amp; Socks
 
-node &quot;Dispositivo del cliente\n----\nNavegador web&quot; as Nav
+node &quot;Cliente\n----\nPC o celular\nNavegador web&quot; as Nav
 
-cloud &quot;CDN Netlify\n----\nindex.html · catalogo.html\ndiagramas.html · css · js · svg&quot; as CDN
-node &quot;Balanceador NGINX&quot; as LB
+cloud &quot;Entorno Netlify (hosting estático)\n----\nCDN · HTTPS automático\nindex.html · catalogo.html\ndiagramas.html · css · js · svg&quot; as CDN
 
-node &quot;Servidor App 1\n----\nNode.js · Docker\nAPI Gateway + servicios&quot; as App1
-node &quot;Servidor App 2\n----\nNode.js · Docker\nAPI Gateway + servicios&quot; as App2
-
-database &quot;PostgreSQL\nprimaria&quot; as DB1
-database &quot;PostgreSQL\nréplica&quot; as DB2
+node &quot;Entorno de producción en la nube (Docker)&quot; as Prod {
+  node &quot;Servidor Web NGINX\n----\nBalanceador de carga\nTLS 1.3 · reparte entre 2 réplicas&quot; as LB
+  node &quot;Servidor App 1\n----\nNode.js\nAPI Gateway + servicios&quot; as App1
+  node &quot;Servidor App 2\n----\nNode.js\nAPI Gateway + servicios&quot; as App2
+  database &quot;Servidor BD\nPostgreSQL primaria&quot; as DB1
+  database &quot;Servidor BD\nPostgreSQL réplica&quot; as DB2
+}
 cloud &quot;Pasarela de Pago&quot; as PG
 
 Nav --&gt; CDN : HTTPS
 Nav --&gt; LB : HTTPS · JWT
-CDN -[hidden]right- LB
+CDN -[hidden]right- Prod
 
 LB --&gt; App1
 LB --&gt; App2
@@ -572,21 +573,11 @@ App1 -[hidden]right- App2
 App1 --&gt; DB1
 App2 --&gt; DB1
 DB1 -right-&gt; DB2
-DB2 -[hidden]right- PG
 App2 --&gt; PG
 
-note right of LB
-  TLS 1.3
-  Reparte la carga
-  entre 2 réplicas
-end note
 note bottom of DB1
   TCP 5432
   AES-256 en reposo
-end note
-note bottom of DB2
-  Replicación
-  asíncrona
 end note
 note bottom of CDN
   Carga inicial &lt; 2 s
@@ -598,10 +589,10 @@ end note
         <aside class="rounded-2xl bg-white border-2 border-tinta p-5 lg:sticky lg:top-24">
           <p class="text-xs font-bold uppercase tracking-widest text-rosa">Diagrama de Despliegue</p>
           <h2 class="font-display text-2xl mt-1">Vista Física</h2>
-          <p class="mt-3 text-slate-700 leading-relaxed">El sitio que entregamos es estático y está publicado en <b>Netlify</b>, que lo sirve por HTTPS (certificado automático) desde su CDN. Con eso cumplimos el RNF01: no hay servidor que mantener y la carga inicial son pocos archivos livianos (el CSS ya va compilado y las fotos de los calcetines son SVG que se dibujan en el navegador, así que no hay imágenes pesadas).</p><p class="mt-3 text-slate-700 leading-relaxed">El resto del diagrama es la infraestructura que proponemos para producción: un balanceador <b>NGINX</b> con TLS 1.3 que reparte las peticiones entre dos servidores Node.js en Docker (si uno se cae, el otro sigue atendiendo), una base <b>PostgreSQL</b> primaria con una réplica y los datos cifrados con AES-256 en reposo. El navegador envía el JWT en cada petición a la API.</p>
+          <p class="mt-3 text-slate-700 leading-relaxed">El sitio que entregamos es estático y está publicado en <b>Netlify</b>, que lo sirve por HTTPS (certificado automático) desde su CDN. Con eso cumplimos el RNF01: no hay servidor que mantener y la carga inicial son pocos archivos livianos (el CSS ya va compilado y las fotos de los calcetines son SVG que se dibujan en el navegador, así que no hay imágenes pesadas).</p><p class="mt-3 text-slate-700 leading-relaxed">El diagrama separa dos entornos de alojamiento. El primero es Netlify, donde está el sitio. El segundo es la nube de producción que proponemos para la API, con contenedores Docker: un <b>Servidor Web NGINX</b> con TLS 1.3 que reparte las peticiones entre dos servidores de aplicación Node.js (si uno se cae, el otro sigue atendiendo) y un servidor de base de datos <b>PostgreSQL</b> primario con réplica y datos cifrados con AES-256 en reposo. El cliente (PC o celular) envía el JWT en cada petición a la API.</p>
           <p class="mt-5 font-bold text-sm uppercase tracking-wider text-rosa">Requerimientos que cubre</p>
           <div class="mt-2 flex flex-wrap gap-1.5"><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RNF01</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RNF02</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF02</span></div>
-          <div class="mt-5"><p class="font-bold text-sm uppercase tracking-wider text-rosa">En el código del sitio</p><ul class="mt-1 divide-y divide-slate-200 text-sm"><li class="py-2"><code class="font-bold text-tinta">Netlify</code><span class="block text-slate-600">Publica la carpeta del sitio con HTTPS automático y cabeceras de seguridad definidas en netlify.toml.</span></li><li class="py-2"><code class="font-bold text-tinta">Balanceador NGINX</code><span class="block text-slate-600">Termina TLS 1.3 y reparte la carga (propuesta de producción).</span></li><li class="py-2"><code class="font-bold text-tinta">Servidores App 1 y 2</code><span class="block text-slate-600">Ejecutarían gateway.js y servicios.js en Node.js dentro de Docker.</span></li><li class="py-2"><code class="font-bold text-tinta">PostgreSQL primaria + réplica</code><span class="block text-slate-600">Reemplazaría a localStorage; puerto 5432 solo accesible desde la red interna.</span></li></ul></div>
+          <div class="mt-5"><p class="font-bold text-sm uppercase tracking-wider text-rosa">En el código del sitio</p><ul class="mt-1 divide-y divide-slate-200 text-sm"><li class="py-2"><code class="font-bold text-tinta">Netlify</code><span class="block text-slate-600">Publica la carpeta del sitio con HTTPS automático y cabeceras de seguridad definidas en netlify.toml.</span></li><li class="py-2"><code class="font-bold text-tinta">Servidor Web NGINX</code><span class="block text-slate-600">Termina TLS 1.3 y reparte la carga entre los servidores de aplicación (propuesta de producción).</span></li><li class="py-2"><code class="font-bold text-tinta">Servidores App 1 y 2</code><span class="block text-slate-600">Ejecutarían gateway.js y servicios.js en Node.js dentro de Docker.</span></li><li class="py-2"><code class="font-bold text-tinta">PostgreSQL primaria + réplica</code><span class="block text-slate-600">Reemplazaría a localStorage; puerto 5432 solo accesible desde la red interna.</span></li></ul></div>
         </aside>
       </div>
       

@@ -7,7 +7,7 @@ const RUTAS = [
   { metodo: "GET", patron: /^\/calcetines\/([\w-]+)$/, acceso: "publico", accion: (p) => CatalogoService.obtener(p[1]) },
   { metodo: "GET", patron: /^\/resenas\/([\w-]+)$/, acceso: "publico", accion: (p) => ResenaService.listar(p[1]) },
   { metodo: "POST", patron: /^\/resenas$/, acceso: "registrado", accion: (p, b, u) => ResenaService.publicar(u, b) },
-  { metodo: "POST", patron: /^\/pedidos$/, acceso: "publico", accion: (p, b) => PedidoService.checkout(b.carrito, b.pago) },
+  { metodo: "POST", patron: /^\/pedidos$/, acceso: "opcional", accion: (p, b, u) => PedidoService.checkout(b.carrito, b.pago, u) },
   { metodo: "POST", patron: /^\/admin\/calcetines$/, acceso: Rol.ADMIN, accion: (p, b) => CatalogoService.registrarCalcetin(b) },
   { metodo: "PATCH", patron: /^\/admin\/calcetines\/([\w-]+)$/, acceso: Rol.ADMIN, accion: (p, b) => CatalogoService.actualizarCalcetin(p[1], b) },
 ];
@@ -22,8 +22,10 @@ const ApiGateway = {
     if (!destino) return { status: 404, error: `Ruta no encontrada: ${metodo} ${ruta}` };
 
     let usuario = null;
-    if (destino.acceso !== "publico") {
-      const token = typeof Sesion !== "undefined" ? Sesion.obtenerToken() : null;
+    const token = typeof Sesion !== "undefined" ? Sesion.obtenerToken() : null;
+    if (destino.acceso === "opcional") {
+      usuario = await AuthService.verificar(token);
+    } else if (destino.acceso !== "publico") {
       usuario = await AuthService.verificar(token);
       if (!usuario) return { status: 401, error: "Debes iniciar sesión para continuar" };
       if (destino.acceso === Rol.ADMIN && usuario.rol !== Rol.ADMIN) {
