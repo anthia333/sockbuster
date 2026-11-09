@@ -28,9 +28,7 @@ document.querySelectorAll("[data-ampliar]").forEach((b) =>
     dialogo.showModal();
   })
 );
-dialogo.addEventListener("click", (e) => {
-  if (e.target === dialogo || e.target.closest("[data-cerrar]")) dialogo.close();
-});
+prepararDialogo(dialogo);
 
 document.querySelectorAll("[data-ir]").forEach((b) =>
   b.addEventListener("click", () => {

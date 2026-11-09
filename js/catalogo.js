@@ -631,9 +631,7 @@ function conectarEventos() {
   });
 
   document.querySelectorAll("dialog").forEach((d) => {
-    d.addEventListener("click", (e) => {
-      if (e.target === d || e.target.closest("[data-cerrar]")) d.close();
-    });
+    prepararDialogo(d);
   });
 
   $("#form-ingresar").addEventListener("submit", enviarIngreso);

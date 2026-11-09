@@ -242,3 +242,18 @@ const COLORES_COLECCION = {
 function colorColeccion(id) {
   return COLORES_COLECCION[id] || { fondo: "#f1f5f9", fuerte: "#475569" };
 }
+
+function prepararDialogo(dialogo) {
+  let empezoEnFondo = false;
+  dialogo.addEventListener("pointerdown", (e) => {
+    empezoEnFondo = e.target === dialogo;
+  });
+  dialogo.addEventListener("click", (e) => {
+    if (e.target.closest("[data-cerrar]")) {
+      dialogo.close();
+    } else if (e.target === dialogo && empezoEnFondo) {
+      dialogo.close();
+    }
+    empezoEnFondo = false;
+  });
+}
