@@ -41,11 +41,29 @@ const CarritoLocal = {
   clave: "sockbuster-carrito",
 
   cargar() {
+    let carrito = new Carrito("C-" + Date.now().toString(36));
     try {
       const guardado = JSON.parse(localStorage.getItem(this.clave));
-      if (guardado) return new Carrito(guardado.id, guardado.items);
+      if (guardado) carrito = new Carrito(guardado.id, guardado.items);
     } catch (e) {}
-    return new Carrito("C-" + Date.now().toString(36));
+    const largoOriginal = JSON.stringify(carrito.items);
+    carrito.items = carrito.items.filter((i) => {
+      const producto = DB.calcetines.find((c) => c.sku === i.sku);
+      return producto && producto.nombre === i.nombre && producto.stock > 0;
+    });
+    carrito.items.forEach((i) => {
+      const producto = DB.calcetines.find((c) => c.sku === i.sku);
+      i.precioUnitario = producto.precio;
+      i.cantidad = Math.min(i.cantidad, producto.stock);
+    });
+    if (JSON.stringify(carrito.items) !== largoOriginal) this.guardar(carrito);
+    return carrito;
+  },
+
+  vaciar() {
+    try {
+      localStorage.removeItem(this.clave);
+    } catch (e) {}
   },
 
   guardar(carrito) {
@@ -123,13 +141,19 @@ function mostrarAviso(mensaje, tipo = "ok") {
     zona.className = "zona-avisos fixed bottom-4 left-1/2 -translate-x-1/2 z-[60] flex flex-col gap-2 w-[calc(100%-2rem)] max-w-sm";
     contenedor.appendChild(zona);
   }
+  const repetido = [...zona.children].find((a) => a.textContent === mensaje);
+  if (repetido) {
+    clearTimeout(repetido.temporizador);
+    repetido.temporizador = setTimeout(() => repetido.remove(), 3200);
+    return;
+  }
   const aviso = document.createElement("div");
   const colores = tipo === "error" ? "bg-rosa text-white" : "bg-tinta text-crema";
   aviso.className = `${colores} rounded-xl px-4 py-3 shadow-lg text-sm font-semibold`;
   aviso.setAttribute("role", "status");
   aviso.textContent = mensaje;
   zona.appendChild(aviso);
-  setTimeout(() => aviso.remove(), 3200);
+  aviso.temporizador = setTimeout(() => aviso.remove(), 3200);
 }
 
 function renderEncabezado(activa) {

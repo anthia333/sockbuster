@@ -101,9 +101,16 @@ async function cargarCatalogo() {
 function agregarAlCarrito(sku, talla, cantidad = 1) {
   const calcetin = DB.calcetines.find((c) => c.sku === sku);
   if (!calcetin || !talla) return;
+  carrito = CarritoLocal.cargar();
   const enCarrito = carrito.items.filter((i) => i.sku === sku).reduce((s, i) => s + i.cantidad, 0);
-  if (enCarrito + cantidad > calcetin.stock) {
-    mostrarAviso(`Solo quedan ${calcetin.stock} unidades de ${calcetin.nombre}`, "error");
+  const disponibles = calcetin.stock - enCarrito;
+  if (disponibles <= 0) {
+    const unidades = calcetin.stock === 1 ? "la única unidad disponible" : `las ${calcetin.stock} unidades disponibles`;
+    mostrarAviso(`Ya tienes en el carrito ${unidades} de ${calcetin.nombre}`, "error");
+    return;
+  }
+  if (cantidad > disponibles) {
+    mostrarAviso(`Solo puedes agregar ${disponibles} ${disponibles === 1 ? "unidad" : "unidades"} más de ${calcetin.nombre}`, "error");
     return;
   }
   carrito.agregar(calcetin, talla, cantidad);
@@ -404,7 +411,7 @@ function cambiarCantidad(indice, delta) {
   const calcetin = DB.calcetines.find((c) => c.sku === item.sku);
   const totalSku = carrito.items.filter((i) => i.sku === item.sku).reduce((s, i) => s + i.cantidad, 0);
   if (delta > 0 && calcetin && totalSku + delta > calcetin.stock) {
-    mostrarAviso(`Solo quedan ${calcetin.stock} unidades`, "error");
+    mostrarAviso(`Ya tienes ${calcetin.stock === 1 ? "la única unidad disponible" : "las " + calcetin.stock + " unidades disponibles"}`, "error");
     return;
   }
   carrito.modificarCantidad(item, delta === 0 ? 0 : item.cantidad + delta);
@@ -649,6 +656,9 @@ function conectarEventos() {
   $("#btn-restablecer").addEventListener("click", () => {
     if (!confirm("¿Volver a los datos de prueba? Se pierden los cambios del inventario, reseñas y pedidos.")) return;
     DB.restablecer();
+    CarritoLocal.vaciar();
+    carrito = CarritoLocal.cargar();
+    actualizarContadorCarrito();
     prepararAdmin();
     cargarCatalogo();
     mostrarAviso("Datos de prueba restablecidos");
