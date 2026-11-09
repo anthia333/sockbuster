@@ -2,7 +2,7 @@
 
 Prototipo web de la tienda de calcetines temáticos Sockbuster, con su arquitectura modelada según el paradigma 4+1 de vistas UML.
 
-**Sitio publicado:** https://SITIO.netlify.app/
+**Sitio publicado:** https://sockbuster-inacap.netlify.app
 
 Evaluación Sumativa 3 · TI3025 Modelamiento de soluciones informáticas · Ingeniería en Informática · INACAP Punta Arenas
 Docente: Paulo Simunovic Oyarzún
