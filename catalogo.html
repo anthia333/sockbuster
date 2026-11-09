@@ -13,17 +13,24 @@
 <body class="bg-crema text-tinta font-sans antialiased">
   <header id="encabezado"></header>
 
-  <main class="max-w-6xl mx-auto px-4 py-8">
-    <div class="flex flex-wrap items-end justify-between gap-4">
-      <div>
-        <p class="text-xs font-bold uppercase tracking-widest text-rosa">Videoclub de calcetines</p>
-        <h1 class="font-display text-3xl md:text-4xl mt-1">Catálogo</h1>
-      </div>
-      <p id="conteo" class="text-sm font-semibold text-slate-600" aria-live="polite"></p>
+  <section class="relative overflow-hidden bg-tinta text-crema">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_85%_20%,rgba(255,61,127,.35)_0,transparent_40%),radial-gradient(circle_at_10%_90%,rgba(25,195,177,.25)_0,transparent_40%)]"></div>
+    <div class="relative max-w-6xl mx-auto px-4 pt-10 pb-24">
+      <p class="text-xs font-bold uppercase tracking-widest text-amarillo">Videoclub de calcetines</p>
+      <h1 class="font-display text-4xl md:text-5xl mt-2">Catálogo</h1>
+      <p class="mt-3 max-w-xl text-crema/75">Explora las colecciones, filtra por talla o precio y abre la ficha de cada modelo para ver sus reseñas.</p>
     </div>
+  </section>
 
-    <section class="mt-6 rounded-2xl bg-white border-2 border-tinta p-4 shadow-[4px_4px_0_#1b1035]" aria-label="Filtros">
-      <div id="chips-colecciones" class="flex flex-wrap gap-2"></div>
+  <main class="max-w-6xl mx-auto px-4 pb-16 -mt-16 relative">
+    <section class="rounded-2xl bg-white border-2 border-tinta p-4 md:p-5 shadow-[6px_6px_0_#1b1035]" aria-label="Filtros">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div id="chips-colecciones" class="flex flex-wrap gap-2"></div>
+        <div class="flex items-center gap-3">
+          <p id="conteo" class="text-sm font-semibold text-slate-600" aria-live="polite"></p>
+          <button id="btn-limpiar" class="hidden text-sm font-bold text-rosa underline underline-offset-4">Limpiar filtros</button>
+        </div>
+      </div>
       <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <label class="block text-sm font-semibold">Buscar
           <input id="filtro-texto" type="search" placeholder="Nombre, película o serie" class="mt-1 w-full rounded-lg border-2 border-slate-200 px-3 py-2 focus:border-tinta outline-none">
@@ -141,8 +148,6 @@
       </div>
     </section>
   </main>
-
-  <footer id="pie" class="mt-16"></footer>
 
   <dialog id="dlg-ficha" class="w-[min(100%-2rem,760px)] max-h-[90vh] rounded-2xl border-2 border-tinta p-0 backdrop:bg-tinta/60">
     <div id="ficha-contenido"></div>

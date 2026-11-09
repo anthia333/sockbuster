@@ -6,3 +6,9 @@ dialog[open] { animation: aparecer .18s ease-out; }
 @keyframes aparecer { from { opacity: 0; transform: translateY(8px); } }
 #dlg-carrito[open] { animation: deslizar .2s ease-out; }
 @keyframes deslizar { from { transform: translateX(40px); opacity: 0; } }
+
+.cinta { animation: cinta 40s linear infinite; }
+@keyframes cinta { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .cinta, dialog[open], #dlg-carrito[open] { animation: none; }
+}

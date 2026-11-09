@@ -14,8 +14,10 @@
   <header id="encabezado"></header>
 
   <main>
-    <section class="bg-tinta text-crema">
-      <div class="max-w-6xl mx-auto px-4 py-10 md:py-14">
+    <section class="relative overflow-hidden bg-tinta text-crema">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_80%_30%,rgba(255,61,127,.3)_0,transparent_45%),radial-gradient(circle_at_10%_90%,rgba(25,195,177,.25)_0,transparent_40%)]"></div>
+      <div class="relative max-w-6xl mx-auto px-4 py-10 md:py-14 grid lg:grid-cols-[1fr_440px] gap-10 items-center">
+      <div>
         <p class="text-xs font-bold uppercase tracking-widest text-amarillo">Documentación técnica</p>
         <h1 class="font-display text-3xl md:text-5xl mt-2">Arquitectura UML 4+1</h1>
         <p class="mt-4 max-w-3xl text-crema/80 text-lg">Modelamos Sockbuster con el paradigma 4+1 de Kruchten: cuatro vistas que muestran el sistema desde distintos ángulos (lógica, desarrollo, procesos y física) y una quinta vista de escenarios que las conecta. Todos los diagramas están hechos en PlantUML y usan los mismos nombres de clases y componentes que el código del sitio.</p>
@@ -25,6 +27,36 @@
           <span class="px-3 py-1.5 rounded-lg bg-white/10">Oscar Ojeda</span>
           <a href="arquitectura.puml" download class="px-3 py-1.5 rounded-lg bg-amarillo text-tinta font-bold">Descargar arquitectura.puml</a>
         </div>
+      </div>
+      <div class="relative grid grid-cols-2 gap-x-3 gap-y-16" aria-label="Mapa del modelo 4+1">
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[62%] border-2 border-dashed border-white/25 rounded-3xl" aria-hidden="true"></div>
+        <button data-ir="logica" class="flex flex-col text-left items-start gap-0.5 min-h-[128px] relative rounded-2xl bg-[#271a4a] border-2 border-white/15 p-4 hover:bg-[#32235c] hover:border-amarillo transition">
+          <span class="font-display text-amarillo text-sm">1</span>
+          <span class="font-display text-base leading-tight">Vista Lógica</span>
+          <span class="text-xs text-crema/80">Clases</span>
+          <span class="text-[11px] text-crema/55 mt-auto">Usuarios finales: qué hace el sistema</span>
+        </button><button data-ir="desarrollo" class="flex flex-col text-right items-end gap-0.5 min-h-[128px] relative rounded-2xl bg-[#271a4a] border-2 border-white/15 p-4 hover:bg-[#32235c] hover:border-amarillo transition">
+          <span class="font-display text-amarillo text-sm">2</span>
+          <span class="font-display text-base leading-tight">Vista de Desarrollo</span>
+          <span class="text-xs text-crema/80">Componentes</span>
+          <span class="text-[11px] text-crema/55 mt-auto">Programadores: cómo se organiza el código</span>
+        </button><button data-ir="procesos" class="flex flex-col text-left items-start gap-0.5 min-h-[128px] relative rounded-2xl bg-[#271a4a] border-2 border-white/15 p-4 hover:bg-[#32235c] hover:border-amarillo transition">
+          <span class="font-display text-amarillo text-sm">3</span>
+          <span class="font-display text-base leading-tight">Vista de Procesos</span>
+          <span class="text-xs text-crema/80">Secuencia y actividad</span>
+          <span class="text-[11px] text-crema/55 mt-auto">Integradores: concurrencia y flujo</span>
+        </button><button data-ir="fisica" class="flex flex-col text-right items-end gap-0.5 min-h-[128px] relative rounded-2xl bg-[#271a4a] border-2 border-white/15 p-4 hover:bg-[#32235c] hover:border-amarillo transition">
+          <span class="font-display text-amarillo text-sm">4</span>
+          <span class="font-display text-base leading-tight">Vista Física</span>
+          <span class="text-xs text-crema/80">Despliegue</span>
+          <span class="text-[11px] text-crema/55 mt-auto">Infraestructura: dónde corre</span>
+        </button>
+        <button data-ir="escenarios" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-40 rounded-2xl bg-rosa text-white p-3 text-center shadow-xl ring-4 ring-tinta hover:scale-105 transition">
+          <span class="block text-[10px] font-bold uppercase tracking-widest text-white/80">+1 · Une a todas</span>
+          <span class="block font-display text-lg leading-tight">Escenarios</span>
+          <span class="block text-xs text-white/85">Casos de uso</span>
+        </button>
+      </div>
       </div>
     </section>
 
@@ -227,13 +259,15 @@ skinparam cloudBackgroundColor #FFF7ED
 skinparam cloudBorderColor #EA580C
 skinparam noteBackgroundColor #FEFCE8
 skinparam noteBorderColor #CA8A04
+skinparam componentStereotypeFontSize 11
 
 title Vista de Desarrollo — Sockbuster Video &amp; Socks
 
-package &quot;Presentación (HTML5 · Tailwind CSS · JavaScript)&quot; {
+package &quot;Presentación (HTML5 · JavaScript)&quot; {
   [Inicio\nindex.html] as Inicio
   [Catálogo y Carrito\ncatalogo.html] as Catalogo
   [Panel Admin\ncatalogo.html#admin] as Panel
+  [Tailwind CSS 3\nestilos.css] &lt;&lt;librería&gt;&gt; as TW #FEF3C7
 }
 
 [ApiGateway\ngateway.js] as GW #FCE7F3
@@ -250,6 +284,9 @@ package &quot;Servicios (servicios.js)&quot; {
   [PedidoService] as Ped
 }
 
+package &quot;Librería&quot; {
+  [Web Crypto API\nHMAC SHA-256] &lt;&lt;librería&gt;&gt; as WC #FEF3C7
+}
 package &quot;Datos (datos.js · localStorage)&quot; {
   database &quot;BD Usuarios&quot; as DBU
   database &quot;BD Catálogo&quot; as DBC
@@ -262,12 +299,14 @@ cloud &quot;Externos&quot; {
 
 Inicio -[hidden]right- Catalogo
 Catalogo -[hidden]right- Panel
+Panel -[hidden]right- TW
 Catalogo ..&gt; GW
 Panel ..&gt; GW
 
 Auth -[hidden]right- Cat
 Cat -[hidden]right- Res
 Res -[hidden]right- Ped
+WC -[hidden]right- DBU
 DBU -[hidden]right- DBC
 DBC -[hidden]right- DBR
 DBR -[hidden]right- DBP
@@ -277,6 +316,7 @@ GW ..&gt; Cat
 GW ..&gt; Res
 GW ..&gt; Ped
 
+Auth ..&gt; WC
 Auth ..&gt; DBU
 Cat ..&gt; DBC
 Res ..&gt; DBR
@@ -289,10 +329,10 @@ Ped ..&gt; PG
         <aside class="rounded-2xl bg-white border-2 border-tinta p-5 lg:sticky lg:top-24">
           <p class="text-xs font-bold uppercase tracking-widest text-rosa">Diagrama de Componentes</p>
           <h2 class="font-display text-2xl mt-1">Vista de Desarrollo</h2>
-          <p class="mt-3 text-slate-700 leading-relaxed">Muestra cómo está organizado el código en capas. Arriba están las páginas, hechas con HTML5, Tailwind CSS (compilado a un solo archivo) y JavaScript sin frameworks. Todas las llamadas pasan por el <b>ApiGateway</b>, que es el único punto de entrada: busca la ruta, valida la firma y el vencimiento del JWT y, si la ruta es de administración, exige el rol ADMIN (si no, responde 401 o 403).</p><p class="mt-3 text-slate-700 leading-relaxed">Debajo hay un servicio por cada área del negocio y cada uno usa solo su propia colección de datos (patrón <i>base de datos por servicio</i>). Así AuthService no comparte los datos de usuarios con el catálogo, lo que ayuda al RNF02. En el prototipo las bases son arreglos de <code>datos.js</code> guardados en localStorage y la pasarela de pago es simulada. Como las páginas solo conocen el gateway, cada servicio podría pasar a un servidor real sin cambiar el HTML.</p>
+          <p class="mt-3 text-slate-700 leading-relaxed">Muestra cómo está organizado el código en capas, junto con las librerías que usa. Arriba están las páginas, hechas con HTML5 y JavaScript sin frameworks, y la librería <b>Tailwind CSS 3</b>, que se compila a un solo archivo de estilos. Todas las llamadas pasan por el <b>ApiGateway</b>, que es el único punto de entrada: busca la ruta, valida la firma y el vencimiento del JWT y, si la ruta es de administración, exige el rol ADMIN (si no, responde 401 o 403).</p><p class="mt-3 text-slate-700 leading-relaxed">Debajo hay un servicio por cada área del negocio y cada uno usa solo su propia colección de datos (patrón <i>base de datos por servicio</i>). Así AuthService no comparte los datos de usuarios con el catálogo, lo que ayuda al RNF02. AuthService firma y verifica los tokens con la librería <b>Web Crypto API</b> del navegador (HMAC SHA-256). En el prototipo las bases son arreglos de <code>datos.js</code> guardados en localStorage y la pasarela de pago es simulada. Como las páginas solo conocen el gateway, cada servicio podría pasar a un servidor real sin cambiar el HTML.</p>
           <p class="mt-5 font-bold text-sm uppercase tracking-wider text-rosa">Requerimientos que cubre</p>
           <div class="mt-2 flex flex-wrap gap-1.5"><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF01</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF02</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF03</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RF04</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RNF01</span><span class="px-2.5 py-1 rounded-full bg-tinta text-amarillo text-xs font-bold">RNF02</span></div>
-          <div class="mt-5"><p class="font-bold text-sm uppercase tracking-wider text-rosa">En el código del sitio</p><ul class="mt-1 divide-y divide-slate-200 text-sm"><li class="py-2"><code class="font-bold text-tinta">index.html · catalogo.html · diagramas.html</code><span class="block text-slate-600">Capa de presentación. El panel de administración está en catalogo.html#admin y solo aparece con rol ADMIN.</span></li><li class="py-2"><code class="font-bold text-tinta">js/gateway.js</code><span class="block text-slate-600">ApiGateway: tabla de rutas, verificación del JWT (HS256) y control por rol.</span></li><li class="py-2"><code class="font-bold text-tinta">js/servicios.js</code><span class="block text-slate-600">AuthService, CatalogoService, ResenaService, PedidoService y la PasarelaPago simulada.</span></li><li class="py-2"><code class="font-bold text-tinta">js/datos.js</code><span class="block text-slate-600">Objeto DB con usuarios, catálogo, reseñas y pedidos, persistido en localStorage.</span></li><li class="py-2"><code class="font-bold text-tinta">css/estilos.css</code><span class="block text-slate-600">Tailwind CSS 3 compilado y minificado (sin el CDN de desarrollo, para cumplir el RNF01).</span></li></ul></div>
+          <div class="mt-5"><p class="font-bold text-sm uppercase tracking-wider text-rosa">En el código del sitio</p><ul class="mt-1 divide-y divide-slate-200 text-sm"><li class="py-2"><code class="font-bold text-tinta">index.html · catalogo.html · diagramas.html</code><span class="block text-slate-600">Capa de presentación. El panel de administración está en catalogo.html#admin y solo aparece con rol ADMIN.</span></li><li class="py-2"><code class="font-bold text-tinta">js/gateway.js</code><span class="block text-slate-600">ApiGateway: tabla de rutas, verificación del JWT (HS256) y control por rol.</span></li><li class="py-2"><code class="font-bold text-tinta">js/servicios.js</code><span class="block text-slate-600">AuthService, CatalogoService, ResenaService, PedidoService y la PasarelaPago simulada.</span></li><li class="py-2"><code class="font-bold text-tinta">js/datos.js</code><span class="block text-slate-600">Objeto DB con usuarios, catálogo, reseñas y pedidos, persistido en localStorage.</span></li><li class="py-2"><code class="font-bold text-tinta">css/estilos.css</code><span class="block text-slate-600">Librería Tailwind CSS 3 compilada y minificada (sin el CDN de desarrollo, para cumplir el RNF01).</span></li><li class="py-2"><code class="font-bold text-tinta">crypto.subtle (Web Crypto API)</code><span class="block text-slate-600">Librería del navegador que usa AuthService para el HMAC SHA-256 del JWT y el hash de las contraseñas.</span></li></ul></div>
         </aside>
       </div>
       
@@ -700,8 +740,6 @@ UC5 --&gt; Pasarela
       </div>
     </section>
   </main>
-
-  <footer id="pie"></footer>
 
   <dialog id="dlg-diagrama" class="w-[min(100%-1rem,1200px)] h-[90vh] rounded-2xl border-2 border-tinta p-0 backdrop:bg-tinta/70">
     <div class="h-full flex flex-col">

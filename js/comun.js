@@ -208,14 +208,13 @@ function actualizarContadorCarrito() {
   contador.classList.toggle("hidden", unidades === 0);
 }
 
-function renderPie() {
-  const pie = document.getElementById("pie");
-  if (!pie) return;
-  pie.innerHTML = `
-    <div class="bg-tinta text-crema/70 text-sm">
-      <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row gap-4 sm:items-center justify-between">
-        <p><span class="font-display text-amarillo">SOCKBUSTER</span> · Prototipo académico · TI3025 Modelamiento de soluciones informáticas · INACAP Punta Arenas</p>
-        <p>Mauricio Aravena · Benjamin Aguayo · Oscar Ojeda</p>
-      </div>
-    </div>`;
+const COLORES_COLECCION = {
+  cf: { fondo: "#e0e7ff", fuerte: "#4f46e5" },
+  terror: { fondo: "#fee2e2", fuerte: "#dc2626" },
+  drama: { fondo: "#d1fae5", fuerte: "#059669" },
+  anim: { fondo: "#fef3c7", fuerte: "#d97706" },
+};
+
+function colorColeccion(id) {
+  return COLORES_COLECCION[id] || { fondo: "#f1f5f9", fuerte: "#475569" };
 }

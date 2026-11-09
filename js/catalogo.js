@@ -34,12 +34,17 @@ function renderChips() {
 
 function tarjeta(c) {
   const agotado = c.stock === 0;
-  return `<article class="flex flex-col rounded-2xl bg-white border-2 border-tinta shadow-[4px_4px_0_#1b1035] overflow-hidden">
-    <button data-ficha="${c.sku}" class="relative h-48 bg-[linear-gradient(135deg,#fff6e9,#ffe4ef)] grid place-items-center" aria-label="Ver ficha de ${escaparHTML(c.nombre)}">
-      ${calcetinSVG(c.foto, "h-40 w-auto hover:-rotate-6 transition " + (agotado ? "grayscale opacity-60" : ""))}
-      <span class="absolute top-3 left-3 px-2 py-1 rounded-md bg-tinta text-crema text-[10px] font-bold uppercase tracking-wider">${escaparHTML(c.coleccion.nombre)}</span>
+  const color = colorColeccion(c.coleccionId);
+  return `<article class="group flex flex-col rounded-2xl bg-white border-2 border-tinta shadow-[4px_4px_0_#1b1035] hover:-translate-y-1 hover:shadow-[6px_8px_0_#1b1035] transition overflow-hidden">
+    <span class="h-2" style="background:${color.fuerte}"></span>
+    <button data-ficha="${c.sku}" class="relative h-52 grid place-items-center overflow-hidden" style="background:linear-gradient(160deg,${color.fondo},#fff6e9)" aria-label="Ver ficha de ${escaparHTML(c.nombre)}">
+      ${calcetinSVG(c.foto, "h-40 w-auto group-hover:-rotate-6 group-hover:scale-105 transition duration-300 " + (agotado ? "grayscale opacity-50" : ""))}
+      <span class="absolute top-3 left-3 px-2 py-1 rounded-md text-white text-[10px] font-bold uppercase tracking-wider" style="background:${color.fuerte}">${escaparHTML(c.coleccion.nombre)}</span>
+      ${c.totalResenas ? `<span class="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-white/90 text-xs font-bold">★ ${c.promedio.toFixed(1)}</span>` : ""}
+      ${agotado ? '<span class="absolute inset-x-0 top-1/2 -translate-y-1/2 -rotate-6 bg-tinta text-crema font-display text-center py-1.5 tracking-widest">AGOTADO</span>' : ""}
+      <span class="absolute bottom-3 left-1/2 -translate-x-1/2 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition px-3 py-1 rounded-full bg-tinta text-crema text-xs font-bold">Ver ficha</span>
     </button>
-    <div class="flex-1 flex flex-col p-4">
+    <div class="flex-1 flex flex-col p-4 border-t-2 border-tinta">
       <div class="flex items-start justify-between gap-2">
         <h2 class="font-display text-lg leading-tight">${escaparHTML(c.nombre)}</h2>
         <p class="font-extrabold text-lg shrink-0">${formatoCLP(c.precio)}</p>
@@ -47,7 +52,7 @@ function tarjeta(c) {
       <p class="text-sm text-slate-600 mt-1">${escaparHTML(c.tematica.titulo)} · ${c.tematica.tipo} ${c.tematica.anio}</p>
       <div class="flex items-center gap-2 mt-2">
         ${estrellasHTML(c.promedio)}
-        <span class="text-xs text-slate-500">${c.totalResenas ? `${c.promedio.toFixed(1)} (${c.totalResenas})` : "Sin reseñas"}</span>
+        <span class="text-xs text-slate-500">${c.totalResenas ? `${c.totalResenas} ${c.totalResenas === 1 ? "reseña" : "reseñas"}` : "Sin reseñas"}</span>
       </div>
       <div class="flex flex-wrap items-center gap-1.5 mt-3">
         ${etiquetaStock(c.stock)}
@@ -58,21 +63,38 @@ function tarjeta(c) {
           ${c.tallas.map((t) => `<option ${t === filtros.talla ? "selected" : ""}>${t}</option>`).join("")}
         </select>
         <button data-agregar="${c.sku}" ${agotado ? "disabled" : ""}
-          class="px-4 py-2 rounded-lg bg-rosa text-white text-sm font-bold hover:bg-rosa/90 disabled:bg-slate-300 disabled:cursor-not-allowed">Agregar</button>
+          class="px-4 py-2 rounded-lg bg-rosa text-white text-sm font-bold hover:bg-rosa/90 active:scale-95 transition disabled:bg-slate-300 disabled:cursor-not-allowed">Agregar</button>
       </div>
     </div>
   </article>`;
+}
+
+function hayFiltros() {
+  return Boolean(filtros.coleccion || filtros.texto || filtros.talla || filtros.precioMax || filtros.orden !== "nombre");
+}
+
+function limpiarFiltros() {
+  Object.assign(filtros, { coleccion: "", texto: "", talla: "", precioMax: 0, orden: "nombre" });
+  $("#filtro-texto").value = "";
+  $("#filtro-talla").value = "";
+  $("#filtro-precio").value = 10000;
+  $("#valor-precio").textContent = "sin límite";
+  $("#filtro-orden").value = "nombre";
+  renderChips();
+  cargarCatalogo();
 }
 
 async function cargarCatalogo() {
   const respuesta = await ApiGateway.solicitar("GET", "/catalogo", filtros);
   const lista = respuesta.data;
   $("#conteo").textContent = `${lista.length} ${lista.length === 1 ? "modelo" : "modelos"}`;
+  $("#btn-limpiar").classList.toggle("hidden", !hayFiltros());
   $("#grilla").innerHTML = lista.length
     ? lista.map(tarjeta).join("")
     : `<div class="col-span-full rounded-2xl border-2 border-dashed border-slate-300 p-10 text-center">
          <p class="font-display text-xl">No hay calcetines con esos filtros</p>
          <p class="text-slate-600 mt-1">Prueba con otra talla o sube el precio máximo.</p>
+         <button data-limpiar class="mt-4 px-5 py-2 rounded-lg bg-tinta text-crema font-bold">Limpiar filtros</button>
        </div>`;
 }
 
@@ -573,7 +595,10 @@ function conectarEventos() {
     cargarCatalogo();
   });
 
+  $("#btn-limpiar").addEventListener("click", limpiarFiltros);
+
   $("#grilla").addEventListener("click", (e) => {
+    if (e.target.closest("[data-limpiar]")) return limpiarFiltros();
     const ficha = e.target.closest("[data-ficha]");
     if (ficha) return abrirFicha(ficha.dataset.ficha);
     const agregar = e.target.closest("[data-agregar]");
@@ -638,7 +663,6 @@ function abrirSegunHash() {
 
 (async function iniciar() {
   renderEncabezado("catalogo");
-  renderPie();
   conectarEncabezado();
   colecciones = (await ApiGateway.solicitar("GET", "/colecciones")).data;
   if (!colecciones.some((c) => c.id === filtros.coleccion)) filtros.coleccion = "";
@@ -648,4 +672,6 @@ function abrirSegunHash() {
   await cargarCatalogo();
   abrirSegunHash();
   window.addEventListener("hashchange", abrirSegunHash);
+  const skuInicial = new URLSearchParams(location.search).get("sku");
+  if (skuInicial && DB.calcetines.some((c) => c.sku === skuInicial)) abrirFicha(skuInicial);
 })();

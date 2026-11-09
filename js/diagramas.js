@@ -1,5 +1,4 @@
 renderEncabezado("diagramas");
-renderPie();
 
 const pestanas = document.querySelectorAll("[data-tab]");
 const paneles = document.querySelectorAll("[data-panel]");
@@ -32,3 +31,10 @@ document.querySelectorAll("[data-ampliar]").forEach((b) =>
 dialogo.addEventListener("click", (e) => {
   if (e.target === dialogo || e.target.closest("[data-cerrar]")) dialogo.close();
 });
+
+document.querySelectorAll("[data-ir]").forEach((b) =>
+  b.addEventListener("click", () => {
+    mostrarVista(b.dataset.ir);
+    document.querySelector('[role="tablist"]').scrollIntoView({ behavior: "smooth" });
+  })
+);

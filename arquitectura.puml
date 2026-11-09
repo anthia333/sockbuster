@@ -203,13 +203,15 @@ skinparam cloudBackgroundColor #FFF7ED
 skinparam cloudBorderColor #EA580C
 skinparam noteBackgroundColor #FEFCE8
 skinparam noteBorderColor #CA8A04
+skinparam componentStereotypeFontSize 11
 
 title Vista de Desarrollo — Sockbuster Video & Socks
 
-package "Presentación (HTML5 · Tailwind CSS · JavaScript)" {
+package "Presentación (HTML5 · JavaScript)" {
   [Inicio\nindex.html] as Inicio
   [Catálogo y Carrito\ncatalogo.html] as Catalogo
   [Panel Admin\ncatalogo.html#admin] as Panel
+  [Tailwind CSS 3\nestilos.css] <<librería>> as TW #FEF3C7
 }
 
 [ApiGateway\ngateway.js] as GW #FCE7F3
@@ -226,6 +228,9 @@ package "Servicios (servicios.js)" {
   [PedidoService] as Ped
 }
 
+package "Librería" {
+  [Web Crypto API\nHMAC SHA-256] <<librería>> as WC #FEF3C7
+}
 package "Datos (datos.js · localStorage)" {
   database "BD Usuarios" as DBU
   database "BD Catálogo" as DBC
@@ -238,12 +243,14 @@ cloud "Externos" {
 
 Inicio -[hidden]right- Catalogo
 Catalogo -[hidden]right- Panel
+Panel -[hidden]right- TW
 Catalogo ..> GW
 Panel ..> GW
 
 Auth -[hidden]right- Cat
 Cat -[hidden]right- Res
 Res -[hidden]right- Ped
+WC -[hidden]right- DBU
 DBU -[hidden]right- DBC
 DBC -[hidden]right- DBR
 DBR -[hidden]right- DBP
@@ -253,6 +260,7 @@ GW ..> Cat
 GW ..> Res
 GW ..> Ped
 
+Auth ..> WC
 Auth ..> DBU
 Cat ..> DBC
 Res ..> DBR

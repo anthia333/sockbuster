@@ -16,48 +16,49 @@
 
   <main>
     <section class="relative overflow-hidden bg-tinta text-crema">
-      <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_20%_20%,#ff3d7f_0,transparent_40%),radial-gradient(circle_at_80%_60%,#19c3b1_0,transparent_40%)]"></div>
-      <div class="relative max-w-6xl mx-auto px-4 py-14 md:py-20 grid md:grid-cols-2 gap-10 items-center">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_15%_25%,rgba(255,61,127,.35)_0,transparent_45%),radial-gradient(circle_at_85%_70%,rgba(25,195,177,.3)_0,transparent_45%)]"></div>
+      <div class="absolute inset-0 opacity-[.07] bg-[repeating-linear-gradient(0deg,#fff_0_1px,transparent_1px_4px)]"></div>
+      <div class="relative max-w-6xl mx-auto px-4 pt-14 pb-24 md:pt-20 md:pb-28 grid md:grid-cols-[1.1fr_1fr] gap-12 items-center">
         <div>
-          <p class="inline-block px-3 py-1 rounded-full bg-white/10 text-amarillo text-xs font-bold uppercase tracking-widest">Nuevo estreno · Temporada 2026</p>
-          <h1 class="font-display text-4xl sm:text-5xl md:text-6xl leading-[1.05] mt-4">
-            Rebobina<br>tus <span class="text-rosa">pies</span>.
+          <p class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-amarillo text-xs font-bold uppercase tracking-widest">
+            <span class="w-2 h-2 rounded-full bg-rosa animate-pulse"></span> Ahora en cartelera
+          </p>
+          <h1 class="font-display text-5xl sm:text-6xl md:text-7xl leading-[.95] mt-5">
+            Rebobina<br>tus <span class="text-rosa">pies</span><span class="text-amarillo">.</span>
           </h1>
-          <p class="mt-5 text-lg text-crema/80 max-w-md">
+          <p class="mt-6 text-lg text-crema/80 max-w-md">
             Calcetines temáticos de películas clásicas, series de culto y animación.
             Elige tu colección, tu talla y lúcelos en la próxima maratón.
           </p>
           <div class="mt-8 flex flex-wrap gap-3">
-            <a href="catalogo.html" class="px-6 py-3 rounded-xl bg-amarillo text-tinta font-extrabold hover:brightness-105">Ver catálogo</a>
-            <a href="diagramas.html" class="px-6 py-3 rounded-xl border-2 border-crema/30 font-bold hover:bg-white/10">Arquitectura 4+1</a>
+            <a href="catalogo.html" class="px-7 py-3.5 rounded-xl bg-amarillo text-tinta font-extrabold shadow-[0_6px_0_#b8860b] hover:translate-y-0.5 hover:shadow-[0_4px_0_#b8860b] transition">Ver catálogo</a>
+            <a href="diagramas.html" class="px-7 py-3.5 rounded-xl border-2 border-crema/30 font-bold hover:bg-white/10 transition">Arquitectura 4+1</a>
           </div>
+          <dl id="cifras" class="mt-10 grid grid-cols-3 max-w-md divide-x divide-white/15 text-center"></dl>
         </div>
-        <div class="relative">
-          <div class="mx-auto max-w-sm rounded-3xl bg-crema text-tinta p-5 shadow-2xl rotate-2">
-            <div class="flex items-center justify-between text-[11px] font-bold uppercase tracking-widest">
-              <span>Sockbuster</span><span class="px-2 py-0.5 rounded bg-rosa text-white">Estreno</span>
-            </div>
-            <div id="destacados" class="grid grid-cols-3 gap-2 mt-4 min-h-[120px]"></div>
-            <div class="mt-4 h-8 rounded bg-tinta flex items-center justify-between px-3 text-crema text-[10px] font-bold tracking-widest">
-              <span>◀◀ REBOBINAR</span><span>SP · 120 MIN</span>
-            </div>
-          </div>
+
+        <div class="relative h-[340px] sm:h-[380px]" aria-hidden="true">
+          <div id="vitrina" class="absolute inset-0"></div>
         </div>
       </div>
     </section>
 
-    <section class="max-w-6xl mx-auto px-4 -mt-8 relative z-10">
-      <div class="rounded-2xl bg-white border-2 border-tinta shadow-[6px_6px_0_#1b1035] p-6 md:p-8 grid md:grid-cols-[1fr_auto] gap-6 items-center">
+    <div class="relative -mt-10 z-10 -rotate-1 bg-amarillo border-y-2 border-tinta overflow-hidden" aria-hidden="true">
+      <div class="cinta flex w-max gap-8 py-3 font-display text-tinta text-lg whitespace-nowrap"></div>
+    </div>
+
+    <section class="max-w-6xl mx-auto px-4 mt-12">
+      <div class="rounded-3xl bg-white border-2 border-tinta shadow-[6px_6px_0_#1b1035] p-6 md:p-8">
         <div>
           <p class="text-xs font-bold uppercase tracking-widest text-rosa">Equipo de arquitectura de software</p>
           <h2 class="font-display text-2xl mt-1">Desarrollado por</h2>
-          <ul class="mt-3 grid sm:grid-cols-3 gap-3">
-            <li class="rounded-xl bg-crema px-4 py-3 font-bold">Mauricio Aravena</li>
-            <li class="rounded-xl bg-crema px-4 py-3 font-bold">Benjamin Aguayo</li>
-            <li class="rounded-xl bg-crema px-4 py-3 font-bold">Oscar Ojeda</li>
+          <ul class="mt-4 grid sm:grid-cols-3 gap-3">
+            <li class="flex items-center gap-3 rounded-xl bg-crema px-4 py-3 font-bold"><span class="grid place-items-center w-9 h-9 rounded-full bg-rosa text-white text-sm">MA</span>Mauricio Aravena</li>
+            <li class="flex items-center gap-3 rounded-xl bg-crema px-4 py-3 font-bold"><span class="grid place-items-center w-9 h-9 rounded-full bg-turquesa text-tinta text-sm">BA</span>Benjamin Aguayo</li>
+            <li class="flex items-center gap-3 rounded-xl bg-crema px-4 py-3 font-bold"><span class="grid place-items-center w-9 h-9 rounded-full bg-amarillo text-tinta text-sm">OO</span>Oscar Ojeda</li>
           </ul>
         </div>
-        <div class="text-sm text-slate-600 md:text-right">
+        <div class="mt-5 pt-4 border-t border-slate-200 flex flex-wrap gap-x-6 gap-y-1 text-sm text-slate-600">
           <p><b class="text-tinta">TI3025</b> Modelamiento de soluciones informáticas</p>
           <p>Ingeniería en Informática · INACAP Punta Arenas</p>
           <p>Docente: Paulo Simunovic Oyarzún</p>
@@ -65,36 +66,68 @@
       </div>
     </section>
 
-    <section class="max-w-6xl mx-auto px-4 py-14">
+    <section class="max-w-6xl mx-auto px-4 py-16">
       <div class="flex items-end justify-between gap-4 flex-wrap">
         <div>
           <p class="text-xs font-bold uppercase tracking-widest text-rosa">Colecciones temáticas</p>
-          <h2 class="font-display text-3xl mt-1">¿Qué vas a ver hoy?</h2>
+          <h2 class="font-display text-3xl md:text-4xl mt-1">¿Qué vas a ver hoy?</h2>
         </div>
-        <a href="catalogo.html" class="text-sm font-bold underline underline-offset-4">Ver todo el catálogo →</a>
+        <a href="catalogo.html" class="text-sm font-bold underline underline-offset-4 hover:text-rosa">Ver todo el catálogo →</a>
       </div>
-      <div id="colecciones" class="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+      <div id="colecciones" class="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
     </section>
 
     <section class="bg-white border-y-2 border-tinta">
-      <div class="max-w-6xl mx-auto px-4 py-12 grid md:grid-cols-3 gap-6">
-        <div>
-          <p class="font-display text-xl">Catálogo con filtros</p>
-          <p class="mt-2 text-slate-600">Busca por colección, talla, precio o el nombre de la película o serie. Cada ficha muestra el stock real y las tallas disponibles.</p>
+      <div class="max-w-6xl mx-auto px-4 py-16">
+        <div class="flex items-end justify-between gap-4 flex-wrap">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-rosa">Los favoritos del público</p>
+            <h2 class="font-display text-3xl md:text-4xl mt-1">Más valorados</h2>
+          </div>
+          <p class="text-sm text-slate-600">Según las reseñas de nuestros fanáticos</p>
         </div>
-        <div>
-          <p class="font-display text-xl">Compra en minutos</p>
-          <p class="mt-2 text-slate-600">Agrega al carrito, ajusta cantidades y confirma el pago simulado. Al final recibes el resumen con el número de tu pedido.</p>
-        </div>
-        <div>
-          <p class="font-display text-xl">Opinión de fanáticos</p>
-          <p class="mt-2 text-slate-600">Con tu cuenta puedes dejar de 1 a 5 estrellas y un comentario sobre el diseño y la calidad de cada par.</p>
-        </div>
+        <div id="valorados" class="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-4"></div>
       </div>
     </section>
-  </main>
 
-  <footer id="pie"></footer>
+    <section class="max-w-6xl mx-auto px-4 py-16">
+      <p class="text-xs font-bold uppercase tracking-widest text-rosa">Así de fácil</p>
+      <h2 class="font-display text-3xl md:text-4xl mt-1">Tu función en 3 pasos</h2>
+      <ol class="mt-8 grid md:grid-cols-3 gap-5">
+        <li class="relative rounded-2xl bg-tinta text-crema p-6 overflow-hidden">
+          <span class="absolute right-4 -bottom-8 font-display text-[120px] leading-none text-white/[.06]">1</span>
+          <span class="inline-grid place-items-center w-11 h-11 rounded-xl bg-amarillo text-tinta font-display text-xl">1</span>
+          <p class="font-display text-xl mt-4">Elige tu película</p>
+          <p class="mt-2 text-crema/75">Filtra por colección, talla, precio o el nombre de la película o serie. Cada ficha muestra el stock real.</p>
+        </li>
+        <li class="relative rounded-2xl bg-tinta text-crema p-6 overflow-hidden">
+          <span class="absolute right-4 -bottom-8 font-display text-[120px] leading-none text-white/[.06]">2</span>
+          <span class="inline-grid place-items-center w-11 h-11 rounded-xl bg-rosa text-white font-display text-xl">2</span>
+          <p class="font-display text-xl mt-4">Arma tu carrito</p>
+          <p class="mt-2 text-crema/75">Agrega los pares que quieras y ajusta las cantidades. Desde $20.000 el envío es gratis.</p>
+        </li>
+        <li class="relative rounded-2xl bg-tinta text-crema p-6 overflow-hidden">
+          <span class="absolute right-4 -bottom-8 font-display text-[120px] leading-none text-white/[.06]">3</span>
+          <span class="inline-grid place-items-center w-11 h-11 rounded-xl bg-turquesa text-tinta font-display text-xl">3</span>
+          <p class="font-display text-xl mt-4">Paga y opina</p>
+          <p class="mt-2 text-crema/75">Confirma el pago y recibe tu número de pedido. Con tu cuenta puedes dejar de 1 a 5 estrellas.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-4 pb-16">
+      <a href="diagramas.html" class="group block rounded-3xl border-2 border-tinta bg-[linear-gradient(120deg,#ff3d7f,#ffc83d)] p-8 md:p-10 shadow-[6px_6px_0_#1b1035] hover:-translate-y-0.5 transition">
+        <div class="grid md:grid-cols-[1fr_auto] gap-6 items-center">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-tinta/70">Detrás de cámaras</p>
+            <p class="font-display text-2xl md:text-3xl mt-1 text-tinta">¿Cómo está construido Sockbuster?</p>
+            <p class="mt-2 text-tinta/80 max-w-xl">Revisa la arquitectura del sistema en las 5 vistas del modelo 4+1: lógica, desarrollo, procesos, física y escenarios.</p>
+          </div>
+          <span class="justify-self-start md:justify-self-end px-6 py-3 rounded-xl bg-tinta text-crema font-bold group-hover:bg-tinta/90">Ver diagramas UML →</span>
+        </div>
+      </a>
+    </section>
+  </main>
 
   <script src="js/modelo.js"></script>
   <script src="js/datos.js"></script>
@@ -103,29 +136,77 @@
   <script src="js/comun.js"></script>
   <script>
     renderEncabezado("inicio");
-    renderPie();
 
     (async () => {
-      const [colecciones, catalogo] = await Promise.all([
+      const [colecciones, catalogo, tematicas] = await Promise.all([
         ApiGateway.solicitar("GET", "/colecciones"),
         ApiGateway.solicitar("GET", "/catalogo", { orden: "valoracion" }),
+        ApiGateway.solicitar("GET", "/tematicas"),
       ]);
+      const productos = catalogo.data;
 
-      document.getElementById("destacados").innerHTML = catalogo.data
-        .slice(0, 3)
-        .map((c) => `<div class="rounded-xl bg-white p-1">${calcetinSVG(c.foto, "w-full h-auto")}</div>`)
+      document.getElementById("cifras").innerHTML = [
+        [productos.length, "modelos"],
+        [colecciones.data.length, "colecciones"],
+        [tematicas.data.length, "películas y series"],
+      ]
+        .map(([n, t]) => `<div class="px-2"><dt class="sr-only">${t}</dt><dd><span class="block font-display text-3xl text-amarillo">${n}</span><span class="text-xs text-crema/70">${t}</span></dd></div>`)
         .join("");
 
-      const colores = ["bg-[#e0e7ff]", "bg-[#fee2e2]", "bg-[#dcfce7]", "bg-[#fef3c7]"];
+      const vitrina = ["SB-TE-03", "SB-CF-01", "SB-AN-01"].map((sku) => productos.find((p) => p.sku === sku)).filter(Boolean);
+      const posiciones = [
+        "left-0 top-10 -rotate-[10deg]",
+        "left-1/2 -translate-x-1/2 top-0 rotate-2 z-10",
+        "right-0 top-10 rotate-[10deg]",
+      ];
+      document.getElementById("vitrina").innerHTML = vitrina
+        .map((p, i) => {
+          const color = colorColeccion(p.coleccionId);
+          return `<div class="absolute ${posiciones[i]} w-[34%] max-w-[158px] rounded-2xl bg-crema text-tinta border-2 border-tinta shadow-2xl overflow-hidden">
+            <div class="h-3" style="background:${color.fuerte}"></div>
+            <div class="p-3" style="background:${color.fondo}">${calcetinSVG(p.foto, "w-full h-auto")}</div>
+            <div class="px-3 py-2 border-t-2 border-tinta">
+              <p class="font-display text-[11px] leading-tight">${escaparHTML(p.nombre)}</p>
+              <p class="text-[10px] text-slate-600 truncate">${escaparHTML(p.tematica.titulo)}</p>
+            </div>
+            <div class="h-5 bg-tinta flex items-center justify-between px-2 text-[8px] font-bold tracking-widest text-crema"><span>VHS</span><span>SP</span></div>
+          </div>`;
+        })
+        .join("");
+
+      const titulos = tematicas.data.map((t) => `<span>${escaparHTML(t.titulo)}</span><span class="text-rosa">✦</span>`).join("");
+      document.querySelector(".cinta").innerHTML = titulos + titulos;
+
       document.getElementById("colecciones").innerHTML = colecciones.data
-        .map((col, i) => {
-          const muestra = catalogo.data.find((c) => c.coleccionId === col.id);
-          const cantidad = catalogo.data.filter((c) => c.coleccionId === col.id).length;
-          return `<a href="catalogo.html?coleccion=${col.id}" class="group rounded-2xl border-2 border-tinta ${colores[i % 4]} p-5 shadow-[4px_4px_0_#1b1035] hover:-translate-y-0.5 transition">
-            <div class="h-32 flex justify-center">${muestra ? calcetinSVG(muestra.foto, "h-full w-auto group-hover:-rotate-6 transition") : ""}</div>
+        .map((col) => {
+          const color = colorColeccion(col.id);
+          const deLaColeccion = productos.filter((c) => c.coleccionId === col.id);
+          const muestra = deLaColeccion[0];
+          return `<a href="catalogo.html?coleccion=${col.id}" class="group relative rounded-2xl border-2 border-tinta p-5 pt-6 shadow-[4px_4px_0_#1b1035] hover:-translate-y-1 hover:shadow-[6px_8px_0_#1b1035] transition overflow-hidden" style="background:${color.fondo}">
+            <span class="absolute inset-x-0 top-0 h-2" style="background:${color.fuerte}"></span>
+            <div class="h-36 flex justify-center">${muestra ? calcetinSVG(muestra.foto, "h-full w-auto group-hover:-rotate-6 group-hover:scale-105 transition") : ""}</div>
             <p class="font-display text-lg mt-3">${escaparHTML(col.nombre)}</p>
             <p class="text-sm text-slate-700 mt-1">${escaparHTML(col.descripcion)}</p>
-            <p class="text-xs font-bold mt-3">${cantidad} modelos →</p>
+            <p class="text-xs font-bold mt-4 inline-flex items-center gap-1" style="color:${color.fuerte}">${deLaColeccion.length} modelos <span class="group-hover:translate-x-1 transition">→</span></p>
+          </a>`;
+        })
+        .join("");
+
+      document.getElementById("valorados").innerHTML = productos
+        .filter((p) => p.totalResenas > 0 || p.stock > 0)
+        .slice(0, 4)
+        .map((p) => {
+          const color = colorColeccion(p.coleccionId);
+          return `<a href="catalogo.html?sku=${p.sku}" class="group rounded-2xl border-2 border-tinta bg-crema overflow-hidden hover:-translate-y-1 transition">
+            <div class="relative h-40 grid place-items-center" style="background:${color.fondo}">
+              ${calcetinSVG(p.foto, "h-32 w-auto group-hover:-rotate-6 transition")}
+              <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-white text-xs font-bold">★ ${p.totalResenas ? p.promedio.toFixed(1) : "Nuevo"}</span>
+            </div>
+            <div class="p-3 border-t-2 border-tinta">
+              <p class="font-display text-sm leading-tight">${escaparHTML(p.nombre)}</p>
+              <p class="text-xs text-slate-600 truncate">${escaparHTML(p.tematica.titulo)}</p>
+              <p class="font-extrabold mt-1">${formatoCLP(p.precio)}</p>
+            </div>
           </a>`;
         })
         .join("");
